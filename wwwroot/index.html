@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moilya — Özel Ölçü Mobilya Atölyesi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #EFE6D8;
+    --cream-panel: #FBF7EF;
+    --walnut-900: #3B2A1F;
+    --walnut-700: #6B4A34;
+    --copper: #B8703E;
+    --copper-dark: #96582E;
+    --sage: #71805A;
+    --ink: #241A12;
+    --line: rgba(59,42,31,0.14);
+    --shadow: 0 20px 40px -24px rgba(59,42,31,0.35);
+    --radius: 14px;
+    --max: 1180px;
+    --danger: #A5432F;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Karla', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    color:var(--walnut-900);
+    margin:0;
+    line-height:1.12;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;text-decoration:none;}
+  img,svg{display:block;max-width:100%;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 28px;}
+  .eyebrow{
+    font-family:'Karla', sans-serif; font-weight:700; font-size:12.5px;
+    letter-spacing:0.16em; text-transform:uppercase; color:var(--copper-dark);
+    display:inline-flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{ content:""; width:22px; height:1px; background:var(--copper-dark); display:inline-block; }
+  ::selection{background:var(--copper); color:#fff;}
+  :focus-visible{outline:2.5px solid var(--copper); outline-offset:3px; border-radius:4px;}
+
+  /* loading */
+  #loading-screen{
+    position:fixed; inset:0; background:var(--cream); display:flex; align-items:center; justify-content:center;
+    flex-direction:column; gap:14px; z-index:999; font-family:'Fraunces',serif; color:var(--walnut-700);
+  }
+  .spinner{ width:28px; height:28px; border-radius:50%; border:3px solid var(--line); border-top-color:var(--copper); animation:spin 0.9s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+
+  /* ---------- header ---------- */
+  header{ position:sticky; top:0; z-index:50; background:rgba(239,230,216,0.86); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 28px; max-width:var(--max); margin:0 auto; }
+  .logo{ font-family:'Fraunces', serif; font-weight:600; font-size:22px; color:var(--walnut-900); letter-spacing:-0.01em; }
+  .logo span{color:var(--copper);}
+  .nav-links{ display:flex; gap:34px; list-style:none; margin:0; padding:0; font-size:14.5px; font-weight:600; color:var(--walnut-700); }
+  .nav-links a{position:relative; padding:4px 0;}
+  .nav-links a::after{ content:""; position:absolute; left:0; bottom:0; width:0; height:2px; background:var(--copper); transition:width .25s ease; }
+  .nav-links a:hover::after{width:100%;}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:13px 24px;
+    border-radius:999px; font-weight:700; font-size:14.5px; border:1px solid transparent; cursor:pointer;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease; white-space:nowrap; font-family:'Karla',sans-serif;
+  }
+  .btn-primary{ background:var(--walnut-900); color:var(--cream-panel); }
+  .btn-primary:hover{ background:var(--copper-dark); transform:translateY(-2px); box-shadow:var(--shadow); }
+  .btn-ghost{ background:transparent; color:var(--walnut-900); border-color:var(--walnut-900); }
+  .btn-ghost:hover{ background:var(--walnut-900); color:var(--cream-panel); }
+  .btn-sm{ padding:9px 16px; font-size:13px; }
+  .nav .btn{ padding:11px 20px; font-size:13.5px; }
+
+  /* ---------- hero ---------- */
+  .hero{ padding:76px 0 40px; position:relative; overflow:hidden;}
+  .hero-grid{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center; }
+  .hero h1{ font-size:clamp(38px, 5vw, 60px); margin:18px 0 22px; }
+  .hero h1 em{ font-style:italic; color:var(--copper-dark); font-weight:500;}
+  .hero p.lead{ font-size:17.5px; color:var(--walnut-700); max-width:480px; margin-bottom:32px; }
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; }
+  .trust-strip{ margin-top:56px; padding-top:28px; border-top:1px solid var(--line); display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .trust-item{ font-size:13.5px; font-weight:600; color:var(--walnut-700); display:flex; gap:10px; align-items:flex-start;}
+  .trust-item svg{ flex:none; margin-top:2px; }
+  .hero-art{ position:relative; }
+  .hero-art svg{ width:100%; height:auto; }
+
+  /* ---------- sections ---------- */
+  section{ padding:96px 0; position:relative;}
+  .section-head{ max-width:620px; margin-bottom:52px; }
+  .section-head h2{ font-size:clamp(28px,3.4vw,40px); margin-top:14px; }
+  .section-head p{ color:var(--walnut-700); font-size:16.5px; margin-top:14px;}
+
+  .services{ background:var(--cream-panel); }
+  .service-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+  .service-card{ background:var(--cream); border:1px solid var(--line); border-radius:var(--radius); padding:30px 24px; transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+  .service-card:hover{ transform:translateY(-6px); box-shadow:var(--shadow); border-color:var(--copper); }
+  .service-card{ cursor:pointer; }
+  .service-card:focus-visible{ border-color:var(--copper); box-shadow:var(--shadow); }
+  .service-link-hint{ display:inline-block; margin-top:14px; font-size:12.5px; font-weight:700; color:var(--copper-dark); }
+  .service-card .icon{ width:46px; height:46px; border-radius:10px; background:var(--walnut-900); color:var(--cream); display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+  .service-card h3{ font-size:19px; margin-bottom:10px; }
+  .service-card p{ font-size:14.5px; color:var(--walnut-700); margin:0; }
+
+  .process-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+  .process-grid::before{ content:""; position:absolute; top:27px; left:6%; right:6%; height:1px; background-image:repeating-linear-gradient(to right, var(--copper) 0 8px, transparent 8px 16px); }
+  .process-step{ position:relative; padding-right:20px;}
+  .process-num{ width:56px; height:56px; border-radius:50%; background:var(--cream-panel); border:2px solid var(--copper); color:var(--copper-dark); font-family:'Fraunces',serif; font-weight:600; font-size:20px; display:flex; align-items:center; justify-content:center; margin-bottom:20px; position:relative; z-index:2; }
+  .process-step h3{ font-size:18px; margin-bottom:8px;}
+  .process-step p{ font-size:14.5px; color:var(--walnut-700); margin:0; }
+
+  .why{ background:var(--walnut-900); color:var(--cream); }
+  .why .eyebrow{ color:var(--copper); }
+  .why .eyebrow::before{ background:var(--copper); }
+  .why h2{ color:var(--cream-panel); }
+  .why-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+  .why-list{ list-style:none; margin:28px 0 0; padding:0; display:flex; flex-direction:column; gap:22px; }
+  .why-list li{ display:flex; gap:16px; align-items:flex-start; font-size:16px; }
+  .why-list svg{ flex:none; margin-top:3px; color:var(--copper); }
+  .why-list b{ color:var(--cream-panel); display:block; margin-bottom:3px; font-family:'Fraunces',serif; font-weight:600; font-size:17px;}
+  .why-list span{ color:rgba(239,230,216,0.72); font-size:14.5px; }
+  .why-panel{ background:rgba(239,230,216,0.06); border:1px solid rgba(239,230,216,0.18); border-radius:var(--radius); padding:36px; }
+  .why-panel .stat{ display:flex; justify-content:space-between; padding:16px 0; border-bottom:1px solid rgba(239,230,216,0.14); }
+  .why-panel .stat:last-child{ border-bottom:none; }
+  .why-panel .stat b{ font-family:'Fraunces',serif; font-size:26px; color:var(--copper); font-weight:600;}
+  .why-panel .stat span{ font-size:13.5px; color:rgba(239,230,216,0.72); max-width:200px; text-align:right;}
+
+  .gallery-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .gallery-filters{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px; }
+  .filter-chip{
+    padding:9px 18px; border-radius:999px; border:1px solid var(--line); background:var(--cream-panel);
+    font-size:13px; font-weight:700; color:var(--walnut-700); cursor:pointer; font-family:'Karla',sans-serif;
+    transition:background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .filter-chip:hover{ border-color:var(--copper); color:var(--copper-dark); }
+  .filter-chip.active{ background:var(--walnut-900); border-color:var(--walnut-900); color:var(--cream-panel); }
+  .gallery-empty{ grid-column:1/-1; text-align:center; padding:54px 20px; color:var(--walnut-700); font-size:14.5px; background:var(--cream-panel); border:1px dashed var(--line); border-radius:var(--radius); }
+  .link-btn{ background:none; border:none; color:var(--copper-dark); font-weight:700; cursor:pointer; text-decoration:underline; font-size:14.5px; font-family:'Karla',sans-serif; padding:0; }
+  .gallery-item{ aspect-ratio:4/5; border-radius:var(--radius); overflow:hidden; position:relative; border:1px solid var(--line); }
+  .gallery-item .caption{ position:absolute; left:0; right:0; bottom:0; padding:16px 18px; background:linear-gradient(to top, rgba(36,26,18,0.75), transparent); color:#fff; font-size:13.5px; font-weight:700; }
+
+  .contact{ background:var(--cream-panel); }
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+  .contact h2{ font-size:clamp(28px,3.4vw,40px); }
+  .contact p.lead{ color:var(--walnut-700); font-size:16.5px; margin:16px 0 28px; max-width:420px;}
+  .contact-info{ display:flex; flex-direction:column; gap:16px; margin-top:32px; }
+  .contact-info a{ display:flex; gap:12px; align-items:center; font-weight:600; font-size:15px; color:var(--walnut-900); }
+  .contact-info svg{ color:var(--copper); flex:none; }
+
+  /* location / map */
+  .map-section{ background:var(--cream); padding-top:0; }
+  .map-card{
+    border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow);
+    position:relative; background:var(--cream-panel);
+  }
+  .map-card iframe{ width:100%; height:420px; border:0; display:block; filter:sepia(8%) saturate(92%); }
+  .map-overlay{
+    position:absolute; left:20px; top:20px; background:var(--cream-panel); border:1px solid var(--line);
+    border-radius:12px; padding:16px 20px; box-shadow:var(--shadow); max-width:260px;
+  }
+  .map-overlay .eyebrow{ margin-bottom:8px; }
+  .map-overlay h3{ font-size:17px; margin-bottom:6px; }
+  .map-overlay p{ font-size:13px; color:var(--walnut-700); margin:0 0 12px; }
+  .map-overlay a.btn{ padding:9px 16px; font-size:12.5px; }
+  @media (max-width:640px){
+    .map-overlay{ position:static; max-width:none; margin-bottom:14px; box-shadow:none; }
+    .map-card iframe{ height:320px; }
+  }
+
+  form{ background:var(--cream); border:1px solid var(--line); border-radius:var(--radius); padding:32px; box-shadow:var(--shadow); }
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:13px; font-weight:700; margin-bottom:7px; color:var(--walnut-700); }
+  .field input, .field textarea{ width:100%; padding:13px 14px; border-radius:9px; border:1px solid var(--line); background:#fff; font-family:'Karla',sans-serif; font-size:14.5px; color:var(--ink); }
+  .field textarea{ resize:vertical; min-height:90px; }
+  .field input:focus, .field textarea:focus{ outline:2.5px solid var(--copper); outline-offset:1px; }
+  form .btn{ width:100%; padding:15px; font-size:15px; margin-top:6px; }
+  .form-note{ font-size:12.5px; color:var(--walnut-700); margin-top:12px; text-align:center; }
+
+  footer{ background:var(--walnut-900); color:rgba(239,230,216,0.72); padding:52px 0 28px; }
+  .footer-grid{ display:flex; justify-content:space-between; align-items:flex-start; gap:40px; flex-wrap:wrap; }
+  .footer-logo{ font-family:'Fraunces',serif; font-size:22px; font-weight:600; color:var(--cream-panel); }
+  .footer-logo span{ color:var(--copper); }
+  .footer-tag{ font-size:13.5px; margin-top:10px; max-width:240px; }
+  .footer-links{ display:flex; gap:60px; flex-wrap:wrap; }
+  .footer-col h4{ color:var(--cream-panel); font-size:13px; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:14px; }
+  .footer-col ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; font-size:14px; }
+  .footer-col a:hover{ color:var(--cream-panel); }
+  .footer-bottom{ margin-top:44px; padding-top:22px; border-top:1px solid rgba(239,230,216,0.14); font-size:12.5px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .admin-link{ opacity:0.5; font-size:11.5px; }
+  .admin-link:hover{ opacity:1; }
+
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} .reveal{ opacity:1; transform:none; transition:none; } }
+
+  @media (max-width: 980px){
+    .nav-links{ display:none; }
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero-art{ order:-1; max-width:420px; margin:0 auto; }
+    .trust-strip{ grid-template-columns:repeat(2,1fr); }
+    .service-grid{ grid-template-columns:repeat(2,1fr); }
+    .process-grid{ grid-template-columns:repeat(2,1fr); row-gap:36px; }
+    .process-grid::before{ display:none; }
+    .why-grid, .contact-grid{ grid-template-columns:1fr; }
+    .gallery-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width: 560px){
+    .wrap{ padding:0 20px; }
+    .service-grid, .process-grid, .gallery-grid{ grid-template-columns:1fr; }
+    .trust-strip{ grid-template-columns:1fr 1fr; }
+    section{ padding:64px 0; }
+    .hero{ padding:48px 0 24px; }
+  }
+
+  /* ---------------- ADMIN ---------------- */
+  #admin-view{ min-height:100vh; background:var(--cream-panel); }
+
+  /* login screen */
+  #admin-login-screen{
+    min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(184,112,62,0.16), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(113,128,90,0.14), transparent 45%),
+      var(--walnut-900);
+  }
+  #admin-login-screen::before{
+    content:""; position:absolute; inset:0;
+    background-image: repeating-linear-gradient(115deg, rgba(251,247,239,0.025) 0 2px, transparent 2px 34px);
+    pointer-events:none;
+  }
+  .admin-login{ position:relative; z-index:1; width:380px; max-width:90vw; padding:40px 36px; background:var(--cream-panel); border-radius:18px; box-shadow:0 30px 60px -20px rgba(0,0,0,0.5); text-align:center; }
+  .admin-login .lock-badge{
+    width:52px; height:52px; border-radius:14px; margin:0 auto 18px; background:var(--walnut-900); color:var(--copper);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .admin-login .brand{ font-family:'Fraunces',serif; font-size:15px; letter-spacing:0.02em; color:var(--walnut-700); margin-bottom:2px; }
+  .admin-login h2{ font-size:25px; margin-bottom:8px; }
+  .admin-login p{ color:var(--walnut-700); font-size:13.5px; margin-bottom:24px; }
+  .admin-login input[type=password]{
+    width:100%; padding:13px 15px; border-radius:10px; border:1px solid var(--line); font-size:14.5px; background:#fff;
+    font-family:'Karla',sans-serif; text-align:center; letter-spacing:0.05em;
+  }
+  .admin-login input[type=password]:focus{ outline:2.5px solid var(--copper); outline-offset:1px; }
+  .admin-login .btn{ width:100%; margin-top:14px; padding:13px; }
+  .admin-error{ color:var(--danger); font-size:12.5px; font-weight:700; margin-top:12px; min-height:16px; }
+  .admin-back-link{ display:inline-block; margin-top:22px; font-size:12.5px; color:rgba(251,247,239,0.55); position:relative; z-index:1; }
+  .admin-back-link:hover{ color:var(--cream-panel); }
+
+  /* layout */
+  .admin-shell-layout{ display:flex; min-height:100vh; }
+  .admin-sidebar{
+    width:250px; flex:none; background:var(--walnut-900); color:rgba(251,247,239,0.82);
+    display:flex; flex-direction:column; padding:22px 14px; position:sticky; top:0; height:100vh; overflow-y:auto;
+  }
+  .admin-sidebar .brand-row{ display:flex; align-items:center; gap:8px; padding:6px 10px 22px; }
+  .admin-sidebar .brand-row .logo{ color:var(--cream-panel); font-size:19px; }
+  .admin-sidebar .brand-row .logo span{ color:var(--copper); }
+  .admin-sidebar .brand-row small{ font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(251,247,239,0.4); display:block; margin-top:1px;}
+  .admin-nav{ display:flex; flex-direction:column; gap:2px; flex:1; }
+  .admin-nav-item{
+    display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:9px; cursor:pointer;
+    font-size:14px; font-weight:600; color:rgba(251,247,239,0.72); background:none; border:none; text-align:left; width:100%;
+    font-family:'Karla',sans-serif; transition:background .15s ease, color .15s ease;
+  }
+  .admin-nav-item svg{ flex:none; opacity:0.85; }
+  .admin-nav-item:hover{ background:rgba(251,247,239,0.06); color:var(--cream-panel); }
+  .admin-nav-item.active{ background:var(--copper); color:#fff; }
+  .admin-nav-item.active svg{ opacity:1; }
+  .admin-nav-badge{
+    margin-left:auto; background:rgba(251,247,239,0.14); color:var(--cream-panel); font-size:10.5px; font-weight:800;
+    padding:2px 7px; border-radius:999px; min-width:18px; text-align:center;
+  }
+  .admin-nav-item.active .admin-nav-badge{ background:rgba(255,255,255,0.28); }
+  .admin-nav-divider{ height:1px; background:rgba(251,247,239,0.1); margin:14px 4px; }
+  .admin-sidebar-foot{ display:flex; flex-direction:column; gap:6px; padding-top:10px; }
+  .admin-sidebar-foot a, .admin-sidebar-foot button{
+    display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:9px; font-size:13.5px; font-weight:600;
+    color:rgba(251,247,239,0.65); background:none; border:none; cursor:pointer; font-family:'Karla',sans-serif; width:100%; text-align:left;
+  }
+  .admin-sidebar-foot a:hover, .admin-sidebar-foot button:hover{ background:rgba(251,247,239,0.06); color:var(--cream-panel); }
+
+  .admin-main{ flex:1; display:flex; flex-direction:column; min-width:0; }
+  .admin-header{
+    position:sticky; top:0; z-index:10; background:rgba(251,247,239,0.9); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line); padding:22px 40px; display:flex; align-items:center; justify-content:space-between; gap:20px;
+  }
+  .admin-header h2{ font-size:22px; }
+  .admin-header p{ font-size:13px; color:var(--walnut-700); margin-top:3px; }
+  .admin-content{ padding:32px 40px 90px; max-width:840px; width:100%; }
+
+  /* overview */
+  .admin-stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px; }
+  .admin-stat-card{ background:var(--cream); border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px; }
+  .admin-stat-card .stat-icon{ width:36px; height:36px; border-radius:9px; background:var(--walnut-900); color:var(--copper); display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+  .admin-stat-card b{ display:block; font-family:'Fraunces',serif; font-size:28px; font-weight:600; color:var(--walnut-900); }
+  .admin-stat-card span{ font-size:12.5px; color:var(--walnut-700); }
+  .admin-quick-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:34px; }
+  .admin-quick-card{
+    background:var(--cream); border:1px solid var(--line); border-radius:12px; padding:16px 18px; cursor:pointer;
+    display:flex; align-items:center; gap:12px; transition:border-color .2s ease, transform .2s ease;
+  }
+  .admin-quick-card:hover{ border-color:var(--copper); transform:translateY(-2px); }
+  .admin-quick-card svg{ color:var(--copper-dark); flex:none; }
+  .admin-quick-card span{ font-size:13.5px; font-weight:700; color:var(--walnut-900); }
+  .admin-section-title{ font-size:14px; font-weight:700; color:var(--walnut-900); margin:0 0 14px; display:flex; align-items:center; justify-content:space-between; }
+  .admin-section-title a{ font-size:12.5px; font-weight:700; color:var(--copper-dark); }
+
+  /* form sections */
+  .admin-panel{ background:var(--cream); border:1px solid var(--line); border-radius:var(--radius); padding:28px 30px; margin-bottom:22px; }
+  .admin-panel .admin-sub{ font-size:12.5px; color:var(--walnut-700); margin:-8px 0 20px; }
+  .admin-field{ margin-bottom:16px; }
+  .admin-field label{ display:block; font-size:12px; font-weight:700; color:var(--walnut-700); margin-bottom:6px; }
+  .admin-field input[type=text], .admin-field input[type=email], .admin-field textarea{
+    width:100%; padding:12px 14px; border-radius:9px; border:1px solid var(--line); background:#fff; font-family:'Karla',sans-serif; font-size:14px;
+  }
+  .admin-field input:focus, .admin-field textarea:focus{ outline:2.5px solid var(--copper); outline-offset:1px; }
+  .admin-field textarea{ resize:vertical; min-height:70px; }
+  .admin-row{ display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; padding:14px; background:var(--cream-panel); border:1px solid var(--line); border-radius:10px; }
+  .admin-row-fields{ flex:1; display:grid; gap:8px; }
+  .admin-row-fields.two-col{ grid-template-columns:1fr 1fr; }
+  .admin-row-fields input[type=text], .admin-row-fields input[type=color], .admin-row-fields select{ padding:10px 12px; border-radius:8px; border:1px solid var(--line); font-size:13.5px; font-family:'Karla',sans-serif; width:100%; background:#fff; }
+  .admin-row-fields input[type=color]{ height:40px; padding:3px; }
+  .admin-remove{ background:#fff; border:1px solid var(--line); color:var(--danger); width:32px; height:32px; border-radius:8px; cursor:pointer; font-size:14px; flex:none; }
+  .admin-remove:hover{ background:var(--danger); color:#fff; border-color:var(--danger); }
+  .admin-add{ background:none; border:1.5px dashed var(--copper); color:var(--copper-dark); padding:11px 16px; border-radius:9px; font-weight:700; font-size:13px; cursor:pointer; width:100%; margin-top:6px; }
+  .admin-add:hover{ background:rgba(184,112,62,0.08); }
+  .admin-color-label{ font-size:11px; color:var(--walnut-700); margin-bottom:3px; display:block; }
+  .gallery-thumb{ width:72px; height:72px; border-radius:9px; background-size:cover; background-position:center; background-color:var(--cream); flex:none; border:1px solid var(--line); }
+  .admin-row-gallery{ align-items:flex-start; }
+  .gallery-upload-row{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .admin-upload-btn{ display:inline-flex; align-items:center; gap:6px; padding:9px 14px; border-radius:8px; border:1px solid var(--line); background:#fff; font-size:12.5px; font-weight:700; color:var(--walnut-900); cursor:pointer; white-space:nowrap; }
+  .admin-upload-btn:hover{ border-color:var(--copper); color:var(--copper-dark); }
+  .admin-upload-btn input[type=file]{ display:none; }
+  .admin-remove-img-btn{ background:none; border:1px solid var(--line); color:var(--danger); padding:9px 12px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; }
+  .admin-remove-img-btn:hover{ background:var(--danger); color:#fff; }
+  .gallery-url-hint{ font-size:11px; color:var(--walnut-700); margin:2px 0 0; }
+  .admin-note{ background:rgba(184,112,62,0.1); border:1px solid rgba(184,112,62,0.35); color:var(--copper-dark); font-size:12.5px; padding:13px 16px; border-radius:10px; margin-bottom:24px; display:flex; gap:10px; align-items:flex-start; }
+  .admin-note svg{ flex:none; margin-top:1px; }
+
+  /* leads table */
+  table.leads-table{ width:100%; border-collapse:collapse; font-size:13.5px; background:var(--cream); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  table.leads-table th{ text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--walnut-700); padding:12px 14px; background:var(--cream-panel); border-bottom:1px solid var(--line); }
+  table.leads-table td{ padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.leads-table tr:last-child td{ border-bottom:none; }
+  .lead-empty{ color:var(--walnut-700); font-size:14px; padding:36px 0; text-align:center; background:var(--cream); border:1px dashed var(--line); border-radius:var(--radius); }
+  .lead-del{ background:#fff; border:1px solid var(--line); color:var(--danger); padding:6px 11px; border-radius:7px; font-size:12px; cursor:pointer; }
+  .lead-del:hover{ background:var(--danger); color:#fff; }
+
+  .admin-save-bar{ position:sticky; bottom:0; background:rgba(251,247,239,0.92); backdrop-filter:blur(8px); border-top:1px solid var(--line); padding:16px 40px; display:flex; justify-content:flex-end; margin-top:8px; }
+
+  @media (max-width: 860px){
+    .admin-shell-layout{ flex-direction:column; }
+    .admin-sidebar{ width:100%; height:auto; position:sticky; top:0; flex-direction:row; align-items:center; padding:12px 14px; overflow-x:auto; }
+    .admin-sidebar .brand-row{ padding:6px 10px; flex:none; }
+    .admin-nav{ flex-direction:row; flex:none; }
+    .admin-nav-item{ white-space:nowrap; }
+    .admin-nav-divider{ display:none; }
+    .admin-sidebar-foot{ flex-direction:row; flex:none; margin-left:auto; }
+    .admin-header, .admin-content{ padding-left:20px; padding-right:20px; }
+    .admin-stats-grid{ grid-template-columns:1fr 1fr; }
+    .admin-quick-grid{ grid-template-columns:1fr 1fr; }
+    .admin-row-fields.two-col{ grid-template-columns:1fr; }
+  }
+
+  .admin-toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(120%); background:var(--walnut-900); color:var(--cream-panel); padding:13px 26px; border-radius:999px; font-size:13.5px; font-weight:700; box-shadow:var(--shadow); transition:transform .3s ease; z-index:200; }
+  .admin-toast.show{ transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div id="loading-screen"><div class="spinner"></div>İçerik yükleniyor…</div>
+
+<!-- ================= PUBLIC SITE ================= -->
+<div id="public-view" style="display:none;">
+<header>
+  <div class="nav wrap" style="padding-left:0;padding-right:0;">
+    <a href="#top" class="logo">moil<span>y</span>a</a>
+    <ul class="nav-links">
+      <li><a href="#hizmetler">Hizmetler</a></li>
+      <li><a href="#surec">Süreç</a></li>
+      <li><a href="#neden-biz">Neden Biz</a></li>
+      <li><a href="#galeri">Örnekler</a></li>
+      <li><a href="#iletisim">İletişim</a></li>
+    </ul>
+    <a href="#iletisim" class="btn btn-primary">Ücretsiz Keşif</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow" id="hero-eyebrow"></span>
+        <h1><span id="hero-title-main"></span><em id="hero-title-em"></em></h1>
+        <p class="lead" id="hero-lead"></p>
+        <div class="hero-cta">
+          <a href="#iletisim" class="btn btn-primary">Ücretsiz Keşif Talep Et</a>
+          <a href="#galeri" class="btn btn-ghost">Örnek Çalışmaları Gör</a>
+        </div>
+        <div class="trust-strip" id="trust-list"></div>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 480 520" xmlns="http://www.w3.org/2000/svg">
+          <rect x="90" y="60" width="300" height="400" rx="6" fill="#FBF7EF" stroke="#3B2A1F" stroke-width="2.5"/>
+          <line x1="240" y1="60" x2="240" y2="460" stroke="#3B2A1F" stroke-width="2.5"/>
+          <line x1="90" y1="180" x2="240" y2="180" stroke="#6B4A34" stroke-width="1.5" opacity="0.6"/>
+          <line x1="90" y1="290" x2="240" y2="290" stroke="#6B4A34" stroke-width="1.5" opacity="0.6"/>
+          <line x1="255" y1="105" x2="375" y2="105" stroke="#B8703E" stroke-width="3" stroke-linecap="round"/>
+          <path d="M265 105v55M285 105v55M305 105v55M325 105v55M345 105v55" stroke="#6B4A34" stroke-width="2" opacity="0.5"/>
+          <rect x="255" y="330" width="120" height="46" rx="3" fill="none" stroke="#3B2A1F" stroke-width="1.5"/>
+          <rect x="255" y="382" width="120" height="46" rx="3" fill="none" stroke="#3B2A1F" stroke-width="1.5"/>
+          <circle cx="315" cy="353" r="2.5" fill="#B8703E"/>
+          <circle cx="315" cy="405" r="2.5" fill="#B8703E"/>
+          <circle cx="228" cy="260" r="3" fill="#B8703E"/>
+          <circle cx="252" cy="260" r="3" fill="#B8703E"/>
+          <line x1="60" y1="60" x2="60" y2="460" stroke="#96582E" stroke-width="1.2"/>
+          <line x1="53" y1="60" x2="67" y2="60" stroke="#96582E" stroke-width="1.2"/>
+          <line x1="53" y1="460" x2="67" y2="460" stroke="#96582E" stroke-width="1.2"/>
+          <text x="38" y="264" font-family="Karla, sans-serif" font-size="13" fill="#96582E" font-weight="700" transform="rotate(-90 38 264)">240 cm</text>
+          <line x1="90" y1="488" x2="390" y2="488" stroke="#96582E" stroke-width="1.2"/>
+          <line x1="90" y1="481" x2="90" y2="495" stroke="#96582E" stroke-width="1.2"/>
+          <line x1="390" y1="481" x2="390" y2="495" stroke="#96582E" stroke-width="1.2"/>
+          <text x="215" y="510" font-family="Karla, sans-serif" font-size="13" fill="#96582E" font-weight="700">300 cm</text>
+          <g>
+            <path d="M400 40 C 430 40, 445 60, 440 85 C 435 108, 410 112, 400 96" fill="none" stroke="#B8703E" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+            <path d="M400 40 C 430 40, 445 60, 440 85 C 435 108, 410 112, 400 96" fill="none" stroke="#FBF7EF" stroke-width="1" stroke-dasharray="1 6" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="hizmetler">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Hizmetler</span>
+        <h2>Evin her köşesi için özel çözüm</h2>
+        <p>Standart ölçü dolap almak yerine, alanınıza tam oturan, ihtiyacınıza göre bölmelenmiş mobilyalar tasarlıyoruz.</p>
+      </div>
+      <div class="service-grid" id="services-list"></div>
+    </div>
+  </section>
+
+  <section id="surec">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Süreç</span>
+        <h2>Ölçüden montaja adım adım</h2>
+        <p>Her proje evinize gelişimizle başlar, anahtarı elinize teslim ettiğimizde biter.</p>
+      </div>
+      <div class="process-grid" id="process-list"></div>
+    </div>
+  </section>
+
+  <section class="why" id="neden-biz">
+    <div class="wrap why-grid">
+      <div class="reveal">
+        <span class="eyebrow">Neden Moilya</span>
+        <h2 style="margin-top:14px; font-size:clamp(26px,3vw,36px);">Fabrika ölçüsü değil, sizin ölçünüz</h2>
+        <ul class="why-list" id="why-list"></ul>
+      </div>
+      <div class="why-panel reveal" id="stats-list"></div>
+    </div>
+  </section>
+
+  <section id="galeri">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Örnek Çalışmalar</span>
+        <h2>Atölyeden çıkan işlerden birkaçı</h2>
+        <p>Her proje farklı bir evin ölçüsüne göre tasarlandı; keşif sonrası size özel örnekleri de paylaşırız.</p>
+      </div>
+      <div class="gallery-filters" id="gallery-filters"></div>
+      <div class="gallery-grid" id="gallery-list"></div>
+    </div>
+  </section>
+
+  <section class="contact" id="iletisim">
+    <div class="wrap contact-grid">
+      <div class="reveal">
+        <span class="eyebrow">İletişim</span>
+        <h2>Evinizi ölçmeye ne zaman gelelim?</h2>
+        <p class="lead">Formu doldurun, 24 saat içinde sizi arayıp size en yakın zamanda ücretsiz keşif planlayalım.</p>
+        <div class="contact-info" id="contact-info"></div>
+      </div>
+      <form id="lead-form">
+        <div class="field"><label for="f-ad">Ad Soyad</label><input id="f-ad" type="text" placeholder="Adınız Soyadınız" required></div>
+        <div class="field"><label for="f-tel">Telefon</label><input id="f-tel" type="tel" placeholder="05xx xxx xx xx" required></div>
+        <div class="field"><label for="f-semt">Semt / İlçe</label><input id="f-semt" type="text" placeholder="Örn. Kadıköy, İstanbul" required></div>
+        <div class="field"><label for="f-mesaj">Mesajınız (opsiyonel)</label><textarea id="f-mesaj" placeholder="Dolap veya mutfak ihtiyacınızdan kısaca bahsedin"></textarea></div>
+        <button class="btn btn-primary" type="submit">Keşif Talep Et</button>
+        <p class="form-note" id="form-note">Formu gönderdiğinizde sizi 24 saat içinde arıyoruz.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="map-section" id="konum">
+    <div class="wrap">
+      <div class="map-card reveal">
+        <div class="map-overlay">
+          <span class="eyebrow">Atölye</span>
+          <h3 id="map-title">Moilya</h3>
+          <p id="map-address"></p>
+          <a class="btn btn-primary" id="map-directions-link" href="#" target="_blank" rel="noopener">Yol Tarifi Al</a>
+        </div>
+        <iframe id="map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <div class="footer-logo">moil<span>y</span>a</div>
+      <p class="footer-tag">Eviniz için terzi işi mobilya. Özel ölçü dolap ve mutfak dolabı atölyesi.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Site</h4>
+        <ul>
+          <li><a href="#hizmetler">Hizmetler</a></li>
+          <li><a href="#surec">Süreç</a></li>
+          <li><a href="#neden-biz">Neden Biz</a></li>
+          <li><a href="#galeri">Örnekler</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>İletişim</h4>
+        <ul id="footer-contact"></ul>
+      </div>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Moilya. Tüm hakları saklıdır.</span>
+    <a href="#admin" class="admin-link">Yönetim Paneli</a>
+  </div>
+</footer>
+</div>
+
+<!-- ================= ADMIN ================= -->
+<div id="admin-view" style="display:none;">
+  <div id="admin-login-screen" style="display:none;"></div>
+  <div id="admin-layout" class="admin-shell-layout" style="display:none;">
+    <aside class="admin-sidebar" id="admin-sidebar"></aside>
+    <div class="admin-main">
+      <div class="admin-header" id="admin-header"></div>
+      <div class="admin-content" id="admin-content"></div>
+    </div>
+  </div>
+</div>
+
+<div class="admin-toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'site-content';
+const LEADS_KEY = 'leads';
+
+const DEFAULT_CONTENT = {
+  hero: {
+    eyebrow: "Özel Ölçü Mobilya Atölyesi",
+    titleMain: "Duvarınızın ölçüsü kadar ",
+    titleEm: "dolap.",
+    lead: "Moilya; gardırobunuzdan mutfak dolabınıza kadar evinizin her köşesini milimetrik ölçüyle tasarlar, kendi atölyesinde üretir, kapınızda monte eder."
+  },
+  trust: ["Yerinde ücretsiz ölçü","Birinci sınıf malzeme","5 yıl garanti","Anahtar teslim montaj"],
+  services: [
+    {title:"Gardırop & Vestiyer", desc:"Yatak odanızın her santimini değerlendiren, sürgülü veya kanatlı kapaklı gardıroplar."},
+    {title:"Mutfak Dolabı", desc:"Tezgahtan tavana, mutfağınızın çalışma düzenine göre kurgulanan dolap sistemleri."},
+    {title:"Çocuk Odası Mobilyası", desc:"Büyüyen ihtiyaçlara göre uyarlanabilen, dayanıklı ve güvenli çocuk odası dolapları."},
+    {title:"Kiler & Ankastre Dolap", desc:"Boşluk kalan her köşeyi kullanışlı depolama alanına çeviren özel çözümler."}
+  ],
+  process: [
+    {title:"Keşif & Ölçü", desc:"Evinize gelir, alanı milimetrik olarak ölçer, ihtiyaçlarınızı dinleriz."},
+    {title:"Tasarım", desc:"Ölçülere göre tasarımı hazırlar, sizinle birlikte netleştiririz."},
+    {title:"Üretim", desc:"Atölyemizde seçtiğiniz malzeme ve renkle üretime başlarız."},
+    {title:"Montaj & Teslim", desc:"Evinizde özenle monte eder, temizleyip anahtarı size teslim ederiz."}
+  ],
+  why: [
+    {title:"Milimetrik özel ölçü", desc:"Standart ebat değil, duvarınızın tam ölçüsüne göre üretim."},
+    {title:"Nem ve çarpılmaya dayanıklı malzeme", desc:"Birinci sınıf laminat ve masif seçenekleriyle uzun ömür."},
+    {title:"Şeffaf fiyatlandırma", desc:"Keşif sonrası net teklif, sürpriz maliyet yok."},
+    {title:"5 yıl garanti", desc:"Montaj sonrası ücretsiz kontrol ve destek."}
+  ],
+  stats: [
+    {value:"500+", label:"tamamlanan özel ölçü proje"},
+    {value:"10 yıl", label:"atölye tecrübesi"},
+    {value:"48 saat", label:"içinde keşif planlama"},
+    {value:"5 yıl", label:"garanti süresi"}
+  ],
+  gallery: [
+    {caption:"Sürgülü Gardırop — Ataşehir", color1:"#C9A27A", color2:"#8B6142", category:"Gardırop & Vestiyer"},
+    {caption:"Mutfak Dolabı — Kadıköy", color1:"#D8C6A6", color2:"#71805A", category:"Mutfak Dolabı"},
+    {caption:"Vestiyer & Kiler — Beylikdüzü", color1:"#B8703E", color2:"#3B2A1F", category:"Kiler & Ankastre Dolap"}
+  ],
+  contact: { phone:"0500 000 00 00", email:"merhaba@moilya.com", instagram:"@moilya", address:"İstanbul, Türkiye", mapQuery:"Kadıköy, İstanbul" },
+  adminPassword: "moilya2026"
+};
+
+let content = null;
+let leads = [];
+let isAdminAuthed = false;
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 2200);
+}
+
+const CHECK_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>';
+const SERVICE_ICONS = [
+  '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="18" height="20" rx="1"/><line x1="12" y1="2" x2="12" y2="22"/></svg>',
+  '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3h16v6H4z"/><path d="M4 13h16v8H4z"/></svg>',
+  '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V9l8-6 8 6v12"/><path d="M9 21v-6h6v6"/></svg>',
+  '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>'
+];
+
+/* ---------------- PUBLIC RENDER ---------------- */
+function renderPublic(){
+  document.getElementById('hero-eyebrow').textContent = content.hero.eyebrow;
+  document.getElementById('hero-title-main').textContent = content.hero.titleMain;
+  document.getElementById('hero-title-em').textContent = content.hero.titleEm;
+  document.getElementById('hero-lead').textContent = content.hero.lead;
+
+  document.getElementById('trust-list').innerHTML = content.trust.map(t=>
+    `<div class="trust-item">${CHECK_ICON}${esc(t)}</div>`).join('');
+
+  document.getElementById('services-list').innerHTML = content.services.map((s,i)=>
+    `<div class="service-card reveal" data-title="${esc(s.title)}" role="button" tabindex="0"
+        onclick="goToServiceGallery(this.dataset.title)"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); goToServiceGallery(this.dataset.title);}">
+      <div class="icon">${SERVICE_ICONS[i % SERVICE_ICONS.length]}</div>
+      <h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p>
+      <span class="service-link-hint">Örnekleri Gör →</span>
+    </div>`).join('');
+
+  document.getElementById('process-list').innerHTML = content.process.map((p,i)=>
+    `<div class="process-step reveal">
+      <div class="process-num">${i+1}</div>
+      <h3>${esc(p.title)}</h3><p>${esc(p.desc)}</p>
+    </div>`).join('');
+
+  document.getElementById('why-list').innerHTML = content.why.map(w=>
+    `<li>${CHECK_ICON}<div><b>${esc(w.title)}</b><span>${esc(w.desc)}</span></div></li>`).join('');
+
+  document.getElementById('stats-list').innerHTML = content.stats.map(s=>
+    `<div class="stat"><b>${esc(s.value)}</b><span>${esc(s.label)}</span></div>`).join('');
+
+  renderGallerySection();
+
+  const c = content.contact;
+  document.getElementById('contact-info').innerHTML = `
+    <a href="tel:${esc(c.phone.replace(/\s/g,''))}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>${esc(c.phone)}</a>
+    <a href="mailto:${esc(c.email)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>${esc(c.email)}</a>
+    <a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>${esc(c.instagram)}</a>
+  `;
+  const mapQuery = (c.mapQuery && c.mapQuery.trim()) ? c.mapQuery : c.address;
+  const mapEncoded = encodeURIComponent(mapQuery);
+  document.getElementById('map-frame').src = `https://www.google.com/maps?q=${mapEncoded}&output=embed`;
+  document.getElementById('map-directions-link').href = `https://www.google.com/maps/dir/?api=1&destination=${mapEncoded}`;
+  document.getElementById('map-address').textContent = c.address;
+
+  document.getElementById('footer-contact').innerHTML = `
+    <li><a href="tel:${esc(c.phone.replace(/\s/g,''))}">${esc(c.phone)}</a></li>
+    <li><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></li>
+    <li><a href="#">${esc(c.instagram)}</a></li>
+    <li>${esc(c.address)}</li>
+  `;
+
+  attachReveal('.reveal');
+}
+
+let galleryFilter = 'all';
+
+function attachReveal(scopeSelector){
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(scopeSelector).forEach(el=>{ el.classList.remove('in'); io.observe(el); });
+}
+
+function renderGallerySection(){
+  const cats = content.services.map(s => s.title);
+  const filtersEl = document.getElementById('gallery-filters');
+  filtersEl.innerHTML = ['all', ...cats].map(c=>{
+    const label = c === 'all' ? 'Tümü' : c;
+    const active = galleryFilter === c ? 'active' : '';
+    return `<button type="button" class="filter-chip ${active}" data-cat="${esc(c)}" onclick="setGalleryFilter(this.dataset.cat)">${esc(label)}</button>`;
+  }).join('');
+
+  const items = galleryFilter === 'all' ? content.gallery : content.gallery.filter(g => g.category === galleryFilter);
+  const listEl = document.getElementById('gallery-list');
+  if(!items.length){
+    listEl.innerHTML = `<div class="gallery-empty">Bu hizmet için henüz görsel eklenmedi.<br><button type="button" class="link-btn" onclick="setGalleryFilter('all')">Tüm çalışmaları gör</button></div>`;
+  } else {
+    listEl.innerHTML = items.map(g=>{
+      const bg = g.image
+        ? `background-image:url('${esc(g.image)}'); background-size:cover; background-position:center;`
+        : `background:linear-gradient(160deg, ${esc(g.color1)}, ${esc(g.color2)});`;
+      return `<div class="gallery-item reveal" style="${bg}"><div class="caption">${esc(g.caption)}</div></div>`;
+    }).join('');
+  }
+  attachReveal('#gallery-list .reveal');
+}
+
+function setGalleryFilter(cat){
+  galleryFilter = cat;
+  renderGallerySection();
+}
+
+function goToServiceGallery(title){
+  setGalleryFilter(title);
+  const target = document.getElementById('galeri');
+  if(target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+document.getElementById('lead-form').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const note = document.getElementById('form-note');
+  const newLead = {
+    id: 'lead_' + Date.now(),
+    name: document.getElementById('f-ad').value,
+    phone: document.getElementById('f-tel').value,
+    area: document.getElementById('f-semt').value,
+    message: document.getElementById('f-mesaj').value,
+    date: new Date().toISOString()
+  };
+  try{
+    leads.push(newLead);
+    await window.storage.set(LEADS_KEY, JSON.stringify(leads), true);
+    note.textContent = 'Teşekkürler! En kısa sürede sizi arayacağız.';
+    e.target.reset();
+  }catch(err){
+    leads.pop();
+    note.textContent = 'Bir sorun oluştu, lütfen bizi doğrudan arayın: ' + content.contact.phone;
+  }
+});
+
+/* ---------------- ADMIN RENDER ---------------- */
+function objEditor(arrayKey, fields, addShape){
+  const arr = content[arrayKey];
+  const cols = fields.length > 1 ? 'two-col' : '';
+  const rows = arr.map((item, i) => {
+    const inputs = fields.map(f =>
+      `<input type="${f.type||'text'}" value="${esc(item[f.key])}" placeholder="${esc(f.label)}"
+        oninput="content.${arrayKey}[${i}].${f.key}=this.value">`
+    ).join('');
+    return `<div class="admin-row">
+      <div class="admin-row-fields ${cols}">${inputs}</div>
+      <button type="button" class="admin-remove" onclick="removeItem('${arrayKey}', ${i})" aria-label="Sil">✕</button>
+    </div>`;
+  }).join('');
+  return rows + `<button type="button" class="admin-add" onclick="addItem('${arrayKey}')">+ Ekle</button>`;
+}
+
+function addItem(key){
+  const shapes = {
+    services: {title:'', desc:''}, process: {title:'', desc:''}, why: {title:'', desc:''},
+    stats: {value:'', label:''},
+    gallery: {caption:'', color1:'#B8703E', color2:'#3B2A1F', category:(content.services[0] && content.services[0].title) || 'Diğer'}
+  };
+  content[key].push(clone(shapes[key]));
+  renderAdmin();
+}
+function removeItem(key, idx){ content[key].splice(idx,1); renderAdmin(); }
+
+function addTrust(){ content.trust.push(''); renderAdmin(); }
+function removeTrust(idx){ content.trust.splice(idx,1); renderAdmin(); }
+
+async function saveAll(){
+  try{
+    await window.storage.set(STORAGE_KEY, JSON.stringify(content), true);
+    renderPublic();
+    showToast('Kaydedildi ✓ Site güncellendi');
+  }catch(e){
+    showToast('Kaydedilemedi, tekrar deneyin');
+  }
+}
+
+async function deleteLead(id){
+  leads = leads.filter(l => l.id !== id);
+  try{ await window.storage.set(LEADS_KEY, JSON.stringify(leads), true); }catch(e){}
+  renderAdmin();
+}
+
+function leadsTableHtml(){
+  if(!leads.length) return '<p class="lead-empty">Henüz keşif talebi yok.</p>';
+  const rows = leads.slice().reverse().map(l => `
+    <tr>
+      <td><b>${esc(l.name)}</b></td>
+      <td>${esc(l.phone)}</td>
+      <td>${esc(l.area)}</td>
+      <td>${esc(l.message || '—')}</td>
+      <td>${new Date(l.date).toLocaleString('tr-TR')}</td>
+      <td><button class="lead-del" onclick="deleteLead('${l.id}')">Sil</button></td>
+    </tr>`).join('');
+  return `<table class="leads-table">
+    <thead><tr><th>Ad Soyad</th><th>Telefon</th><th>Semt</th><th>Mesaj</th><th>Tarih</th><th></th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+const ICON = {
+  overview:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>',
+  hero:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 15l5-5 4 4 4-4 5 5"/></svg>',
+  services:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>',
+  process:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M6 8.5v7"/><path d="M11 6h10M11 18h10"/></svg>',
+  why:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>',
+  stats:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>',
+  gallery:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9" r="1.8"/><path d="M21 16l-5.5-5.5L4 21"/></svg>',
+  contact:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>',
+  leads:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>',
+  settings:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
+  lock:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>',
+  back:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>',
+  logout:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>'
+};
+
+const NAV_ITEMS = [
+  {id:'overview', label:'Genel Bakış'},
+  {id:'hero', label:'Ana Başlık'},
+  {id:'services', label:'Hizmetler'},
+  {id:'process', label:'Süreç'},
+  {id:'why', label:'Neden Biz'},
+  {id:'stats', label:'İstatistikler'},
+  {id:'gallery', label:'Galeri'},
+  {id:'contact', label:'İletişim'},
+  {id:'leads', label:'Talepler', badge:true},
+  {id:'settings', label:'Ayarlar'}
+];
+const PANEL_META = {
+  overview:{title:'Genel Bakış', desc:'Sitenizin ve gelen taleplerin özeti.'},
+  hero:{title:'Ana Başlık', desc:'Sayfanın en üstünde görünen giriş bölümü.'},
+  services:{title:'Hizmetler', desc:'Ana sayfada listelenen hizmet kartları.'},
+  process:{title:'Süreç Adımları', desc:'Sırayla numaralandırılan çalışma adımları.'},
+  why:{title:'Neden Moilya', desc:'Güven veren maddeler listesi.'},
+  stats:{title:'İstatistikler', desc:'Sayısal başarı göstergeleri.'},
+  gallery:{title:'Galeri', desc:'Örnek çalışma kartları.'},
+  contact:{title:'İletişim Bilgileri', desc:'Telefon, e-posta ve adres bilgileri.'},
+  leads:{title:'Gelen Talepler', desc:'Formdan gönderilen keşif talepleri.'},
+  settings:{title:'Ayarlar', desc:'Yönetim paneli şifresi.'}
+};
+
+let adminTab = 'overview';
+function setAdminTab(id){ adminTab = id; renderAdmin(); window.scrollTo(0,0); }
+
+function renderLoginScreen(){
+  document.getElementById('admin-login-screen').innerHTML = `
+    <div>
+      <div class="admin-login">
+        <div class="lock-badge">${ICON.lock}</div>
+        <div class="brand">moilya</div>
+        <h2>Yönetim Girişi</h2>
+        <p>Site içeriğini düzenlemek için şifreyi girin.</p>
+        <input type="password" id="admin-pass-input" placeholder="Şifre">
+        <button class="btn btn-primary" onclick="attemptLogin()">Giriş Yap</button>
+        <div class="admin-error" id="admin-error"></div>
+      </div>
+      <div style="text-align:center;"><a href="#top" class="admin-back-link">← Siteye dön</a></div>
+    </div>`;
+  document.getElementById('admin-pass-input').addEventListener('keydown', e=>{ if(e.key==='Enter') attemptLogin(); });
+}
+
+function renderSidebar(){
+  document.getElementById('admin-sidebar').innerHTML = `
+    <div class="brand-row">
+      <a href="#top" class="logo">moil<span>y</span>a</a>
+    </div>
+    <small style="padding:0 12px 14px; display:block; margin-top:-16px;">Yönetim Paneli</small>
+    <nav class="admin-nav">
+      ${NAV_ITEMS.map(n => `
+        <button type="button" class="admin-nav-item ${adminTab===n.id?'active':''}" onclick="setAdminTab('${n.id}')">
+          ${ICON[n.id]}<span>${n.label}</span>
+          ${n.badge ? `<span class="admin-nav-badge">${leads.length}</span>` : ''}
+        </button>`).join('')}
+    </nav>
+    <div class="admin-nav-divider"></div>
+    <div class="admin-sidebar-foot">
+      <a href="#top">${ICON.back}<span>Siteyi Görüntüle</span></a>
+      <button type="button" onclick="logoutAdmin()">${ICON.logout}<span>Çıkış Yap</span></button>
+    </div>
+  `;
+}
+
+function renderHeader(){
+  const meta = PANEL_META[adminTab];
+  document.getElementById('admin-header').innerHTML = `
+    <div><h2>${meta.title}</h2><p>${meta.desc}</p></div>
+    <button class="btn btn-primary btn-sm" onclick="saveAll()">Değişiklikleri Kaydet</button>
+  `;
+}
+
+function panelOverview(){
+  const recent = leads.slice().reverse().slice(0,3);
+  return `
+    <div class="admin-stats-grid">
+      <div class="admin-stat-card"><div class="stat-icon">${ICON.leads}</div><b>${leads.length}</b><span>toplam keşif talebi</span></div>
+      <div class="admin-stat-card"><div class="stat-icon">${ICON.services}</div><b>${content.services.length}</b><span>hizmet kartı</span></div>
+      <div class="admin-stat-card"><div class="stat-icon">${ICON.gallery}</div><b>${content.gallery.length}</b><span>galeri öğesi</span></div>
+      <div class="admin-stat-card"><div class="stat-icon">${ICON.stats}</div><b>${content.stats.length}</b><span>istatistik</span></div>
+    </div>
+    <div class="admin-section-title">Hızlı Erişim</div>
+    <div class="admin-quick-grid">
+      <div class="admin-quick-card" onclick="setAdminTab('hero')">${ICON.hero}<span>Ana Başlığı Düzenle</span></div>
+      <div class="admin-quick-card" onclick="setAdminTab('gallery')">${ICON.gallery}<span>Galeriyi Güncelle</span></div>
+      <div class="admin-quick-card" onclick="setAdminTab('contact')">${ICON.contact}<span>İletişim Bilgileri</span></div>
+    </div>
+    <div class="admin-section-title">Son Talepler <a href="#" onclick="setAdminTab('leads'); return false;">Tümünü Gör →</a></div>
+    ${recent.length ? `<table class="leads-table"><thead><tr><th>Ad Soyad</th><th>Telefon</th><th>Semt</th><th>Tarih</th></tr></thead><tbody>
+      ${recent.map(l=>`<tr><td><b>${esc(l.name)}</b></td><td>${esc(l.phone)}</td><td>${esc(l.area)}</td><td>${new Date(l.date).toLocaleDateString('tr-TR')}</td></tr>`).join('')}
+    </tbody></table>` : `<div class="lead-empty">Henüz keşif talebi yok.</div>`}
+  `;
+}
+
+function panelHero(){
+  return `
+    <div class="admin-panel">
+      <div class="admin-field"><label>Üst etiket</label><input type="text" value="${esc(content.hero.eyebrow)}" oninput="content.hero.eyebrow=this.value"></div>
+      <div class="admin-field"><label>Başlık (düz kısım)</label><input type="text" value="${esc(content.hero.titleMain)}" oninput="content.hero.titleMain=this.value"></div>
+      <div class="admin-field"><label>Başlık (vurgulu kısım)</label><input type="text" value="${esc(content.hero.titleEm)}" oninput="content.hero.titleEm=this.value"></div>
+      <div class="admin-field" style="margin-bottom:0;"><label>Alt açıklama</label><textarea oninput="content.hero.lead=this.value">${esc(content.hero.lead)}</textarea></div>
+    </div>
+    <div class="admin-panel">
+      <div class="admin-sub" style="margin-top:0;">Güven Şeridi — hero altında görünen kısa maddeler.</div>
+      ${content.trust.map((t,i)=>`
+        <div class="admin-row">
+          <div class="admin-row-fields"><input type="text" value="${esc(t)}" oninput="content.trust[${i}]=this.value"></div>
+          <button type="button" class="admin-remove" onclick="removeTrust(${i})">✕</button>
+        </div>`).join('')}
+      <button type="button" class="admin-add" onclick="addTrust()">+ Ekle</button>
+    </div>
+  `;
+}
+function panelServices(){ return `<div class="admin-panel">${objEditor('services', [{key:'title',label:'Başlık'},{key:'desc',label:'Açıklama'}])}</div>`; }
+function panelProcess(){ return `<div class="admin-panel">${objEditor('process', [{key:'title',label:'Başlık'},{key:'desc',label:'Açıklama'}])}</div>`; }
+function panelWhy(){ return `<div class="admin-panel">${objEditor('why', [{key:'title',label:'Başlık'},{key:'desc',label:'Açıklama'}])}</div>`; }
+function panelStats(){ return `<div class="admin-panel">${objEditor('stats', [{key:'value',label:'Değer (örn. 500+)'},{key:'label',label:'Açıklama'}])}</div>`; }
+function panelGallery(){
+  const categoryOptions = [...content.services.map(s => s.title), 'Diğer'];
+  return `<div class="admin-panel">
+    <div class="admin-sub" style="margin-top:0;">Bilgisayarınızdan fotoğraf yükleyin ya da bir görsel bağlantısı yapıştırın. Her fotoğrafı bir hizmetle eşleştirin — ana sayfada o hizmet kutucuğuna tıklayınca ziyaretçi doğrudan buradaki fotoğraflara gider.</div>
+    ${content.gallery.map((g,i)=>{
+      const hasImg = !!g.image;
+      const thumbStyle = hasImg ? `background-image:url('${esc(g.image)}')` : `background:linear-gradient(160deg, ${esc(g.color1)}, ${esc(g.color2)})`;
+      const urlValue = (g.image && !g.image.startsWith('data:')) ? g.image : '';
+      return `
+      <div class="admin-row admin-row-gallery">
+        <div class="gallery-thumb" style="${thumbStyle}"></div>
+        <div class="admin-row-fields">
+          <input type="text" value="${esc(g.caption)}" placeholder="Başlık" oninput="content.gallery[${i}].caption=this.value">
+          <select onchange="content.gallery[${i}].category=this.value">
+            ${categoryOptions.map(c => `<option value="${esc(c)}" ${g.category===c?'selected':''}>${esc(c)}</option>`).join('')}
+          </select>
+          <div class="gallery-upload-row">
+            <label class="admin-upload-btn">
+              ${hasImg ? 'Fotoğrafı Değiştir' : 'Fotoğraf Yükle'}
+              <input type="file" accept="image/*" onchange="handleGalleryImageUpload(${i}, this)">
+            </label>
+            ${hasImg ? `<button type="button" class="admin-remove-img-btn" onclick="removeGalleryImage(${i})">Fotoğrafı Kaldır</button>` : ''}
+          </div>
+          <input type="text" value="${esc(urlValue)}" placeholder="veya görsel bağlantısı (URL) yapıştırın" oninput="content.gallery[${i}].image=this.value">
+          ${!hasImg ? `<div style="display:flex; gap:10px;">
+            <div style="flex:1;"><span class="admin-color-label">Renk 1 (fotoğraf yoksa)</span><input type="color" value="${esc(g.color1)}" oninput="content.gallery[${i}].color1=this.value"></div>
+            <div style="flex:1;"><span class="admin-color-label">Renk 2 (fotoğraf yoksa)</span><input type="color" value="${esc(g.color2)}" oninput="content.gallery[${i}].color2=this.value"></div>
+          </div>` : ''}
+        </div>
+        <button type="button" class="admin-remove" onclick="removeItem('gallery', ${i})">✕</button>
+      </div>`;
+    }).join('')}
+    <button type="button" class="admin-add" onclick="addItem('gallery')">+ Ekle</button>
+  </div>`;
+}
+
+function resizeImageFile(file, maxWidth, quality){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      const img = new Image();
+      img.onload = ()=>{
+        let w = img.width, h = img.height;
+        if(w > maxWidth){ h = Math.round(h * maxWidth / w); w = maxWidth; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => reject(new Error('Görsel okunamadı'));
+      img.src = reader.result;
+    };
+    reader.onerror = () => reject(new Error('Dosya okunamadı'));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handleGalleryImageUpload(idx, inputEl){
+  const file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  try{
+    const dataUrl = await resizeImageFile(file, 1000, 0.75);
+    content.gallery[idx].image = dataUrl;
+    renderAdmin();
+    showToast('Fotoğraf eklendi — kaydetmeyi unutmayın');
+  }catch(e){
+    showToast('Fotoğraf yüklenemedi, tekrar deneyin');
+  }
+}
+function removeGalleryImage(idx){ delete content.gallery[idx].image; renderAdmin(); }
+function panelContact(){
+  return `<div class="admin-panel">
+    <div class="admin-field"><label>Telefon</label><input type="text" value="${esc(content.contact.phone)}" oninput="content.contact.phone=this.value"></div>
+    <div class="admin-field"><label>E-posta</label><input type="text" value="${esc(content.contact.email)}" oninput="content.contact.email=this.value"></div>
+    <div class="admin-field"><label>Instagram</label><input type="text" value="${esc(content.contact.instagram)}" oninput="content.contact.instagram=this.value"></div>
+    <div class="admin-field" style="margin-bottom:0;"><label>Adres / Şehir</label><input type="text" value="${esc(content.contact.address)}" oninput="content.contact.address=this.value"></div>
+  </div>
+  <div class="admin-panel">
+    <div class="admin-sub" style="margin-top:0;">Harita — Sayfanın altındaki haritada aranacak konum. Atölyenizin tam adını ve mahallesini yazmanız en isabetli sonucu verir (örn. "Bağdat Caddesi No:12, Kadıköy, İstanbul").</div>
+    <div class="admin-field" style="margin-bottom:0;"><label>Harita konumu</label><input type="text" value="${esc(content.contact.mapQuery || '')}" oninput="content.contact.mapQuery=this.value" placeholder="Örn. Kadıköy, İstanbul"></div>
+  </div>`;
+}
+function panelLeads(){ return `<div>${leadsTableHtml()}</div>`; }
+function panelSettings(){
+  return `<div class="admin-panel">
+    <div class="admin-note">${ICON.settings}<span>Bu şifre koruması temel düzeydedir; sayfa kodunu görebilen biri şifreyi de görebilir. Hassas bilgiler için kullanmayın.</span></div>
+    <div class="admin-field" style="margin-bottom:0;"><label>Yönetim şifresi</label><input type="text" value="${esc(content.adminPassword)}" oninput="content.adminPassword=this.value"></div>
+  </div>`;
+}
+
+function renderContent(){
+  const panels = { overview:panelOverview, hero:panelHero, services:panelServices, process:panelProcess, why:panelWhy, stats:panelStats, gallery:panelGallery, contact:panelContact, leads:panelLeads, settings:panelSettings };
+  document.getElementById('admin-content').innerHTML = panels[adminTab]();
+}
+
+function renderAdmin(){
+  if(!isAdminAuthed){
+    document.getElementById('admin-login-screen').style.display = 'flex';
+    document.getElementById('admin-layout').style.display = 'none';
+    renderLoginScreen();
+    return;
+  }
+  document.getElementById('admin-login-screen').style.display = 'none';
+  document.getElementById('admin-layout').style.display = 'flex';
+  renderSidebar();
+  renderHeader();
+  renderContent();
+}
+
+function attemptLogin(){
+  const val = document.getElementById('admin-pass-input').value;
+  if(val === content.adminPassword){
+    isAdminAuthed = true;
+    adminTab = 'overview';
+    renderAdmin();
+  } else {
+    document.getElementById('admin-error').textContent = 'Şifre yanlış, tekrar deneyin.';
+  }
+}
+function logoutAdmin(){ isAdminAuthed = false; adminTab = 'overview'; location.hash = 'admin'; renderAdmin(); }
+
+/* ---------------- ROUTING & INIT ---------------- */
+function route(){
+  const isAdmin = location.hash.replace('#','') === 'admin';
+  document.getElementById('public-view').style.display = isAdmin ? 'none' : 'block';
+  document.getElementById('admin-view').style.display = isAdmin ? 'block' : 'none';
+  if(isAdmin) renderAdmin();
+}
+window.addEventListener('hashchange', route);
+
+async function init(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY, true);
+    content = res && res.value ? JSON.parse(res.value) : null;
+  }catch(e){ content = null; }
+  if(!content){
+    content = clone(DEFAULT_CONTENT);
+    try{ await window.storage.set(STORAGE_KEY, JSON.stringify(content), true); }catch(e){}
+  } else {
+    content.contact = Object.assign({}, DEFAULT_CONTENT.contact, content.contact);
+  }
+  try{
+    const lres = await window.storage.get(LEADS_KEY, true);
+    leads = lres && lres.value ? JSON.parse(lres.value) : [];
+  }catch(e){ leads = []; }
+
+  renderPublic();
+  route();
+  document.getElementById('loading-screen').style.display = 'none';
+}
+init();
+</script>
+
+</body>
+</html>
