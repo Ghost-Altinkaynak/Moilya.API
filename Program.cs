@@ -3,24 +3,42 @@ using Moilya.API.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// DbContext Servis Kaydı
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
+
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.MapOpenApi();
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        await DbInitializer.SeedAsync(context);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Seed işlemi sırasında hata: " + ex.Message);
+    }
 }
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
+app.UseCors("AllowAll");
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
