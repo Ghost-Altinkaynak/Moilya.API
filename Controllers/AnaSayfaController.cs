@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moilya.API.Context;
+using Moilya.API.Entities;
 
 namespace Moilya.API.Controllers
 {
@@ -32,6 +34,29 @@ namespace Moilya.API.Controllers
                 SurecAdimlari = surecAdimlari,
                 Istatistikler = istatistikler
             });
+        }
+
+        [HttpPut("manset")]
+        [Authorize]
+        public async Task<IActionResult> GuncelleManset([FromBody] AnaSayfaManset guncel)
+        {
+            var manset = await _context.AnaSayfaMansetleri.FirstOrDefaultAsync();
+            if (manset == null)
+            {
+                guncel.GuncellenmeTarihi = DateTime.UtcNow;
+                _context.AnaSayfaMansetleri.Add(guncel);
+            }
+            else
+            {
+                manset.UstBaslik = guncel.UstBaslik;
+                manset.AnaBaslik = guncel.AnaBaslik;
+                manset.VurguluBaslik = guncel.VurguluBaslik;
+                manset.AciklamaMetni = guncel.AciklamaMetni;
+                manset.GuncellenmeTarihi = DateTime.UtcNow;
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { Mesaj = "Manşet güncellendi." });
         }
     }
 }

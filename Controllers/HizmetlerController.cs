@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moilya.API.Context;
 using Moilya.API.Entities;
@@ -24,6 +25,7 @@ namespace Moilya.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> EkleHizmet([FromBody] Hizmet hizmet)
         {
             if (!ModelState.IsValid)
@@ -33,6 +35,34 @@ namespace Moilya.API.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { Mesaj = "Hizmet başarıyla eklendi.", HizmetId = hizmet.Id });
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GuncelleHizmet(int id, [FromBody] Hizmet guncel)
+        {
+            var hizmet = await _context.Hizmetler.FindAsync(id);
+            if (hizmet == null) return NotFound("Hizmet bulunamadı.");
+
+            hizmet.Baslik = guncel.Baslik;
+            hizmet.Aciklama = guncel.Aciklama;
+            hizmet.SiraNo = guncel.SiraNo;
+            await _context.SaveChangesAsync();
+
+            return Ok(hizmet);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> SilHizmet(int id)
+        {
+            var hizmet = await _context.Hizmetler.FindAsync(id);
+            if (hizmet == null) return NotFound("Hizmet bulunamadı.");
+
+            _context.Hizmetler.Remove(hizmet);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Mesaj = "Hizmet silindi." });
         }
     }
 }

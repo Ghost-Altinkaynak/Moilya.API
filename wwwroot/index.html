@@ -1943,7 +1943,7 @@
             '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>'
         ];
 
-        /* ---------------- PUBLIC RENDER ---------------- */
+      
         function renderPublic() {
             document.getElementById('hero-eyebrow').textContent = content.hero.eyebrow;
             document.getElementById('hero-title-main').textContent = content.hero.titleMain;
@@ -2384,7 +2384,7 @@
         }
         function logoutAdmin() { isAdminAuthed = false; adminTab = 'overview'; location.hash = 'admin'; renderAdmin(); }
 
-        /* ---------------- ROUTING & INIT ---------------- */
+       
         function route() {
             const isAdmin = location.hash.replace('#', '') === 'admin';
             document.getElementById('public-view').style.display = isAdmin ? 'none' : 'block';
