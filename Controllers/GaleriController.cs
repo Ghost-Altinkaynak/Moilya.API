@@ -21,7 +21,6 @@ namespace Moilya.API.Controllers
         public async Task<IActionResult> GetirGaleri()
         {
             var galeri = await _context.GaleriOgeleri
-                .Include(x => x.Hizmet)
                 .OrderBy(x => x.SiraNo)
                 .ToListAsync();
 

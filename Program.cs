@@ -7,11 +7,9 @@ using Moilya.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Veritabanı Bağlantısı
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// CORS Yapılandırması (Ön Yüz İzinleri)
 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
 builder.Services.AddCors(options =>
 {
@@ -23,14 +21,11 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
-// Swagger Yapılandırması
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Servis Tanımlamaları
 builder.Services.AddScoped<JwtTokenService>();
 
-// JWT Kimlik Doğrulama
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -51,7 +46,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Veritabanı Başlangıç Verileri (Seed Data)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
