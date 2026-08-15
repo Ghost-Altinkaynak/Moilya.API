@@ -1,5 +1,4 @@
-﻿
-const API_BASE = '';
+﻿const API_BASE = '';
 const TOKEN_KEY = 'moilya_admin_token';
 
 function getToken() {
@@ -31,8 +30,19 @@ function isTokenValid() {
     return (payload.exp * 1000) > Date.now();
 }
 
+// 401 hatasını çözen düzeltilmiş apiGet
 async function apiGet(path) {
-    const res = await fetch(API_BASE + path);
+    const headers = {};
+    const token = getToken();
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
+    const res = await fetch(API_BASE + path, { headers });
+
+    if (res.status === 401) {
+        clearToken();
+        throw new Error('Oturum süresi doldu, lütfen tekrar giriş yapın.');
+    }
+
     if (!res.ok) {
         throw new Error('Veri alınamadı (HTTP ' + res.status + ')');
     }

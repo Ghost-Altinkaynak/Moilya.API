@@ -37,11 +37,9 @@ const PANEL_META = {
     gallery: { title: 'Galeri', desc: 'Örnek çalışma kartları.' },
     contact: { title: 'İletişim Bilgileri', desc: 'Telefon, e-posta ve adres bilgileri.' },
     leads: { title: 'Gelen Talepler', desc: 'Formdan gönderilen keşif talepleri.' },
-    settings: { title: 'Ayarlar', desc: 'Hesap bilgisi ve çıkış.' }
+    settings: { title: 'Ayarlar', desc: 'Hesap bilgisi ve şifre yönetimi.' }
 };
 
-// Basit liste tipindeki bölümlerin (Hizmetler, Süreç, Neden Biz, İstatistikler, Güven Şeridi)
-// hangi alanlara sahip olduğunu ve API yolunu tanımlar.
 const LIST_CONFIG = {
     '/api/GuvenMaddeleri': { fields: [{ key: 'metin', label: 'Metin' }, { key: 'siraNo', label: 'Sıra No', numeric: true }], empty: { metin: 'Yeni Madde', siraNo: 0 } },
     '/api/Hizmetler': { fields: [{ key: 'baslik', label: 'Başlık' }, { key: 'aciklama', label: 'Açıklama' }, { key: 'siraNo', label: 'Sıra No', numeric: true }], empty: { baslik: 'Yeni Hizmet', aciklama: '', siraNo: 0 } },
@@ -54,7 +52,7 @@ let currentTab = 'overview';
 let leadsCount = 0;
 let galeriResimYollari = {};
 
-// ---------- Basit liste panelleri (ortak render + kaydet + sil + ekle) ----------
+// ---------- Basit liste panelleri (ortak render + toplu kaydet + sil + ekle) ----------
 
 function renderListPanel(apiPath, items) {
     const config = LIST_CONFIG[apiPath];
@@ -67,31 +65,38 @@ function renderListPanel(apiPath, items) {
         return `
             <div class="admin-row" data-id="${item.id}" data-path="${apiPath}">
               <div class="admin-row-fields">${inputs}</div>
-              <div style="display:flex; flex-direction:column; gap:6px;">
-                <button type="button" class="admin-upload-btn" onclick="kaydetListeSatiri(this)">Kaydet</button>
-                <button type="button" class="admin-remove" onclick="silListeSatiri(this)">✕</button>
-              </div>
+              <button type="button" class="admin-remove" onclick="silListeSatiri(this)">✕</button>
             </div>`;
     }).join('');
 
-    return `<div class="admin-panel">${rows}<button type="button" class="admin-add" onclick="ekleListeSatiri('${apiPath}')">+ Ekle</button></div>`;
+    return `
+        <div class="admin-panel">
+            ${rows}
+            <button type="button" class="admin-add" onclick="ekleListeSatiri('${apiPath}')">+ Ekle</button>
+            <button type="button" class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="kaydetListePaneli('${apiPath}')">Tüm Değişiklikleri Kaydet</button>
+        </div>`;
 }
 
-async function kaydetListeSatiri(btn) {
-    const row = btn.closest('.admin-row');
-    const apiPath = row.dataset.path;
-    const id = row.dataset.id;
-    const payload = {};
-    row.querySelectorAll('[data-field]').forEach(inp => {
-        const field = inp.dataset.field;
-        const numeric = inp.dataset.numeric === 'true';
-        payload[field] = numeric ? parseInt(inp.value || '0', 10) : inp.value;
+async function kaydetListePaneli(apiPath) {
+    const rows = document.querySelectorAll(`.admin-row[data-path="${apiPath}"]`);
+    const istekler = [];
+
+    rows.forEach(row => {
+        const id = row.dataset.id;
+        const payload = {};
+        row.querySelectorAll('[data-field]').forEach(inp => {
+            const field = inp.dataset.field;
+            const numeric = inp.dataset.numeric === 'true';
+            payload[field] = numeric ? parseInt(inp.value || '0', 10) : inp.value;
+        });
+        istekler.push(api.put(`${apiPath}/${id}`, payload));
     });
+
     try {
-        await api.put(`${apiPath}/${id}`, payload);
-        showToast('Kaydedildi ✓');
+        await Promise.all(istekler);
+        showToast('Tüm değişiklikler kaydedildi ✓');
     } catch (e) {
-        showToast(e.message || 'Kaydetme başarısız oldu');
+        showToast(e.message || 'Bazı kayıtlar kaydedilemedi');
     }
 }
 
@@ -113,7 +118,7 @@ async function ekleListeSatiri(apiPath) {
     const config = LIST_CONFIG[apiPath];
     try {
         await api.post(apiPath, config.empty);
-        showToast('Yeni kayıt eklendi, doldurup Kaydet\'e basın');
+        showToast('Yeni kayıt eklendi');
         await renderPanel();
     } catch (e) {
         showToast(e.message || 'Ekleme başarısız oldu');
@@ -167,12 +172,10 @@ async function loadHero() {
           <div class="admin-field"><label>Başlık (düz kısım)</label><input type="text" id="hero-anaBaslik" value="${escapeHtml(m.anaBaslik || '')}"></div>
           <div class="admin-field"><label>Başlık (vurgulu kısım)</label><input type="text" id="hero-vurguluBaslik" value="${escapeHtml(m.vurguluBaslik || '')}"></div>
           <div class="admin-field" style="margin-bottom:0;"><label>Alt açıklama</label><textarea id="hero-aciklamaMetni">${escapeHtml(m.aciklamaMetni || '')}</textarea></div>
-          <button type="button" class="btn btn-primary" style="margin-top:16px;" onclick="kaydetManset()">Manşeti Kaydet</button>
+          <button type="button" class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="kaydetManset()">Manşeti Kaydet</button>
         </div>
-        <div class="admin-panel">
-          <div class="admin-sub" style="margin-top:0;">Güven Şeridi — hero altında görünen kısa maddeler.</div>
-          ${renderListPanel('/api/GuvenMaddeleri', guvenMaddeleri).replace('<div class="admin-panel">', '').replace(/<\/div>$/, '')}
-        </div>
+        <div class="admin-sub" style="margin:-6px 0 10px;">Güven Şeridi — hero altında görünen kısa maddeler.</div>
+        ${renderListPanel('/api/GuvenMaddeleri', guvenMaddeleri)}
     `;
 }
 
@@ -391,17 +394,48 @@ async function talepSil(id) {
     }
 }
 
-// ---------- Ayarlar ----------
+// ---------- Ayarlar (Şifre Değiştirme Formu Dahil) ----------
 
 function loadSettings() {
     const payload = api.getTokenPayload();
     const kullaniciAdi = payload && payload.sub ? payload.sub : 'admin';
     document.getElementById('admin-content').innerHTML = `
         <div class="admin-panel">
-          <div class="admin-note">${ICON.settings}<span>Giriş yapan kullanıcı: <b>${escapeHtml(kullaniciAdi)}</b>. Şifre değiştirme özelliği backend'e henüz eklenmedi — istersen bir sonraki adımda ekleriz.</span></div>
+          <div class="admin-note">${ICON.settings}<span>Giriş yapan kullanıcı: <b>${escapeHtml(kullaniciAdi)}</b></span></div>
           <button type="button" class="btn btn-primary" onclick="cikisYap()">Çıkış Yap</button>
         </div>
+        <div class="admin-panel">
+          <div class="admin-sub" style="margin-top:0;">Şifreni Değiştir</div>
+          <div class="admin-field"><label>Mevcut şifre</label><input type="password" id="sifre-mevcut"></div>
+          <div class="admin-field"><label>Yeni şifre</label><input type="password" id="sifre-yeni"></div>
+          <div class="admin-field" style="margin-bottom:0;"><label>Yeni şifre (tekrar)</label><input type="password" id="sifre-yeni-tekrar"></div>
+          <button type="button" class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="sifreGuncelle()">Şifreyi Güncelle</button>
+          <div class="admin-error" id="sifre-hata"></div>
+        </div>
     `;
+}
+
+async function sifreGuncelle() {
+    const mevcut = document.getElementById('sifre-mevcut').value;
+    const yeni = document.getElementById('sifre-yeni').value;
+    const tekrar = document.getElementById('sifre-yeni-tekrar').value;
+    const hataEl = document.getElementById('sifre-hata');
+    hataEl.textContent = '';
+
+    if (yeni !== tekrar) {
+        hataEl.textContent = 'Yeni şifreler birbiriyle eşleşmiyor.';
+        return;
+    }
+
+    try {
+        await api.post('/api/Auth/sifre-degistir', { mevcutSifre: mevcut, yeniSifre: yeni });
+        showToast('Şifre güncellendi ✓');
+        document.getElementById('sifre-mevcut').value = '';
+        document.getElementById('sifre-yeni').value = '';
+        document.getElementById('sifre-yeni-tekrar').value = '';
+    } catch (e) {
+        hataEl.textContent = e.message || 'Şifre güncellenemedi.';
+    }
 }
 
 // ---------- Panel yönlendirme / sekme geçişi ----------

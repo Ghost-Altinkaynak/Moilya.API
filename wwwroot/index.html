@@ -849,13 +849,18 @@
             gap: 10px;
         }
 
+        /* Gizli Yönetim Linki */
         .admin-link {
-            opacity: 0.5;
-            font-size: 11.5px;
+            opacity: 0.25;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 0 2px;
+            color: inherit;
+            text-decoration: none;
         }
 
             .admin-link:hover {
-                opacity: 1;
+                opacity: 0.9;
             }
 
         .reveal {
@@ -1012,6 +1017,7 @@
                 margin-bottom: 24px;
             }
 
+            .admin-login input[type=text],
             .admin-login input[type=password] {
                 width: 100%;
                 padding: 13px 15px;
@@ -1022,8 +1028,10 @@
                 font-family: 'Karla',sans-serif;
                 text-align: center;
                 letter-spacing: 0.05em;
+                margin-bottom: 10px;
             }
 
+                .admin-login input[type=text]:focus,
                 .admin-login input[type=password]:focus {
                     outline: 2.5px solid var(--copper);
                     outline-offset: 1px;
@@ -1853,8 +1861,7 @@
                 </div>
             </div>
             <div class="wrap footer-bottom">
-                <span>© 2026 Moilya. Tüm hakları saklıdır.</span>
-                <a href="#admin" class="admin-link">Yönetim Paneli</a>
+                <span>© 2026 Moilya. Tüm hakları saklıdır. <a href="#admin" class="admin-link" aria-label="Yönetim">•</a></span>
             </div>
         </footer>
     </div>

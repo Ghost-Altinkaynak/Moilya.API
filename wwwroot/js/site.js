@@ -3,7 +3,6 @@ let galeriListesi = [];
 let galeriFiltre = 'all'; // 'all' ya da bir hizmetId (sayı, metin olarak)
 
 const CHECK_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>';
-
 const SERVICE_ICONS = [
     '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="18" height="20" rx="1"/><line x1="12" y1="2" x2="12" y2="22"/></svg>',
     '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3h16v6H4z"/><path d="M4 13h16v8H4z"/></svg>',
@@ -148,21 +147,28 @@ function attachReveal(secici) {
     });
 }
 
+function instagramUrlUret(instagram) {
+    if (!instagram) return 'https://instagram.com/';
+    const kullaniciAdi = instagram.trim().replace(/^@/, '');
+    return `https://instagram.com/${kullaniciAdi}`;
+}
+
 function renderContact(c) {
     if (!c) return;
 
     const telTemiz = escapeHtml((c.telefon || '').replace(/\s/g, ''));
+    const instagramUrl = escapeHtml(instagramUrlUret(c.instagram));
 
     document.getElementById('contact-info').innerHTML = `
         <a href="tel:${telTemiz}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>${escapeHtml(c.telefon)}</a>
         <a href="mailto:${escapeHtml(c.eposta)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>${escapeHtml(c.eposta)}</a>
-        <a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>${escapeHtml(c.instagram || '')}</a>
+        <a href="${instagramUrl}" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>${escapeHtml(c.instagram || '')}</a>
     `;
 
     document.getElementById('footer-contact').innerHTML = `
         <li><a href="tel:${telTemiz}">${escapeHtml(c.telefon)}</a></li>
         <li><a href="mailto:${escapeHtml(c.eposta)}">${escapeHtml(c.eposta)}</a></li>
-        <li><a href="#">${escapeHtml(c.instagram || '')}</a></li>
+        <li><a href="${instagramUrl}" target="_blank" rel="noopener">${escapeHtml(c.instagram || '')}</a></li>
         <li>${escapeHtml(c.adres || '')}</li>
     `;
 
