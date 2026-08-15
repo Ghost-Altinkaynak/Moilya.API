@@ -49,6 +49,21 @@ function renderHero(manset) {
     document.getElementById('hero-title-main').textContent = manset.anaBaslik;
     document.getElementById('hero-title-em').textContent = manset.vurguluBaslik;
     document.getElementById('hero-lead').textContent = manset.aciklamaMetni;
+    renderSiteName(manset.siteAdi);
+}
+
+function renderSiteName(siteAdi) {
+    const isim = (siteAdi && siteAdi.trim()) ? siteAdi.trim() : 'Moilya';
+    const anaKisim = isim.slice(0, -1);
+    const sonHarf = isim.slice(-1);
+    const html = `${escapeHtml(anaKisim)}<span>${escapeHtml(sonHarf)}</span>`;
+
+    const headerLogo = document.getElementById('site-logo-header');
+    const footerLogo = document.getElementById('site-logo-footer');
+    if (headerLogo) headerLogo.innerHTML = html;
+    if (footerLogo) footerLogo.innerHTML = html;
+
+    document.title = isim + ' — Özel Ölçü Mobilya Atölyesi';
 }
 
 function renderTrust(list) {

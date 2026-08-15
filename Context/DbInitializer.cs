@@ -13,6 +13,7 @@ namespace Moilya.API.Context
             {
                 context.AnaSayfaMansetleri.Add(new AnaSayfaManset
                 {
+                    SiteAdi = "Moilya",
                     UstBaslik = "Özel Ölçü Mobilya Atölyesi",
                     AnaBaslik = "Duvarınızın ölçüsü kadar ",
                     VurguluBaslik = "dolap.",

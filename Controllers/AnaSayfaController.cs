@@ -48,6 +48,7 @@ namespace Moilya.API.Controllers
             }
             else
             {
+                manset.SiteAdi = guncel.SiteAdi;
                 manset.UstBaslik = guncel.UstBaslik;
                 manset.AnaBaslik = guncel.AnaBaslik;
                 manset.VurguluBaslik = guncel.VurguluBaslik;

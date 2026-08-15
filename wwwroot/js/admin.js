@@ -168,6 +168,7 @@ async function loadHero() {
 
     document.getElementById('admin-content').innerHTML = `
         <div class="admin-panel">
+          <div class="admin-field"><label>Site Adı (logo)</label><input type="text" id="hero-siteAdi" value="${escapeHtml(m.siteAdi || 'Moilya')}"></div>
           <div class="admin-field"><label>Üst etiket</label><input type="text" id="hero-ustBaslik" value="${escapeHtml(m.ustBaslik || '')}"></div>
           <div class="admin-field"><label>Başlık (düz kısım)</label><input type="text" id="hero-anaBaslik" value="${escapeHtml(m.anaBaslik || '')}"></div>
           <div class="admin-field"><label>Başlık (vurgulu kısım)</label><input type="text" id="hero-vurguluBaslik" value="${escapeHtml(m.vurguluBaslik || '')}"></div>
@@ -181,6 +182,7 @@ async function loadHero() {
 
 async function kaydetManset() {
     const payload = {
+        siteAdi: document.getElementById('hero-siteAdi').value,
         ustBaslik: document.getElementById('hero-ustBaslik').value,
         anaBaslik: document.getElementById('hero-anaBaslik').value,
         vurguluBaslik: document.getElementById('hero-vurguluBaslik').value,
