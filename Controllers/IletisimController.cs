@@ -41,6 +41,7 @@ namespace Moilya.API.Controllers
                 mevcut.Instagram = guncel.Instagram;
                 mevcut.Adres = guncel.Adres;
                 mevcut.HaritaAramasi = guncel.HaritaAramasi;
+                mevcut.WhatsAppNumarasi = guncel.WhatsAppNumarasi;
                 mevcut.GuncellenmeTarihi = DateTime.UtcNow;
             }
 

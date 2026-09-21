@@ -1333,7 +1333,7 @@
             }
 
         .admin-content {
-            padding: 32px 40px 90px;
+            padding: 32px 40px 200px;
             max-width: 840px;
             width: 100%;
         }
@@ -1827,6 +1827,31 @@
             transform: translateY(0);
         }
 
+        .modal-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--walnut-900);
+            color: var(--copper);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+            .modal-icon.show {
+                display: flex;
+            }
+
+                .modal-icon.show ~ .modal-title,
+                .modal-icon.show ~ .modal-message {
+                    text-align: center;
+                }
+
+                .modal-icon.show ~ .modal-actions {
+                    justify-content: center;
+                }
+
         .modal-title {
             font-family: 'Fraunces', serif;
             font-size: 20px;
@@ -2058,6 +2083,7 @@
     <div class="admin-toast" id="toast"></div>
     <div class="modal-overlay" id="custom-modal-overlay">
         <div class="modal-box">
+            <div class="modal-icon" id="modal-icon"></div>
             <h3 class="modal-title" id="modal-title"></h3>
             <p class="modal-message" id="modal-message"></p>
             <div class="modal-actions" id="modal-actions"></div>
@@ -2065,9 +2091,9 @@
     </div>
 
     <!-- JS Bağlantıları (Cache-Busting) -->
-    <script src="js/api.js?v=2"></script>
-    <script src="js/modal.js?v=1"></script>
-    <script src="js/site.js?v=2"></script>
-    <script src="js/admin.js?v=2"></script>
+    <script src="js/api.js?v=3"></script>
+    <script src="js/modal.js?v=2"></script>
+    <script src="js/site.js?v=3"></script>
+    <script src="js/admin.js?v=3"></script>
 </body>
 </html>

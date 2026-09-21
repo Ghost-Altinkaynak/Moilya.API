@@ -211,7 +211,11 @@ async function loadContact() {
           <div class="admin-field"><label>E-posta</label><input type="text" id="c-eposta" value="${escapeHtml((c || {}).eposta || '')}"></div>
           <div class="admin-field"><label>Instagram</label><input type="text" id="c-instagram" value="${escapeHtml((c || {}).instagram || '')}"></div>
           <div class="admin-field"><label>Adres / Şehir</label><input type="text" id="c-adres" value="${escapeHtml((c || {}).adres || '')}"></div>
-          <div class="admin-field" style="margin-bottom:0;"><label>Harita konumu</label><input type="text" id="c-harita" value="${escapeHtml((c || {}).haritaAramasi || '')}" placeholder="Örn. Kadıköy, İstanbul"></div>
+          <div class="admin-field"><label>Harita konumu</label><input type="text" id="c-harita" value="${escapeHtml((c || {}).haritaAramasi || '')}" placeholder="Örn. Kadıköy, İstanbul"></div>
+          <div class="admin-field" style="margin-bottom:0;">
+            <label>WhatsApp Numarası</label>
+            <input type="text" id="c-whatsapp" value="${escapeHtml((c || {}).whatsAppNumarasi || '')}" placeholder="Örn. 905551234567 (başında + veya boşluk olmadan)">
+          </div>
           <button type="button" class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="kaydetIletisim()">İletişim Bilgilerini Kaydet</button>
         </div>
         <div class="admin-sub" style="margin:-6px 0 10px;">İletişim altındaki güven/keşif maddeleri.</div>
@@ -225,7 +229,8 @@ async function kaydetIletisim() {
         eposta: document.getElementById('c-eposta').value,
         instagram: document.getElementById('c-instagram').value,
         adres: document.getElementById('c-adres').value,
-        haritaAramasi: document.getElementById('c-harita').value
+        haritaAramasi: document.getElementById('c-harita').value,
+        whatsAppNumarasi: document.getElementById('c-whatsapp').value
     };
     try {
         await api.put('/api/Iletisim', payload);

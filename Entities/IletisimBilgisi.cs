@@ -8,6 +8,7 @@
         public string? Instagram { get; set; }
         public string? Adres { get; set; }
         public string? HaritaAramasi { get; set; }
+        public string? WhatsAppNumarasi { get; set; }
         public DateTime GuncellenmeTarihi { get; set; } = DateTime.UtcNow;
     }
 }
