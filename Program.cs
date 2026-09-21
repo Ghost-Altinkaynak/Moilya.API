@@ -1,5 +1,7 @@
 using System.Text;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Moilya.API.Context;
@@ -11,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
@@ -20,10 +23,8 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddScoped<JwtTokenService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -43,6 +44,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("GirisSinirlamasi", limiterOptions =>
+    {
+        limiterOptions.Window = TimeSpan.FromMinutes(1);
+        limiterOptions.PermitLimit = 5;
+        limiterOptions.QueueLimit = 0;
+    });
+    options.RejectionStatusCode = 429;
+});
 
 var app = builder.Build();
 
@@ -67,15 +79,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
 app.UseCors("Frontend");
-
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseRateLimiter();
 app.MapControllers();
 
 app.Run();

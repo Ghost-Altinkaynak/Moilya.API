@@ -17,6 +17,7 @@ namespace Moilya.API.Context
         public DbSet<Istatistik> Istatistikler { get; set; }
         public DbSet<GaleriOgesi> GaleriOgeleri { get; set; }
         public DbSet<IletisimBilgisi> IletisimBilgileri { get; set; }
+        public DbSet<IletisimMaddesi> IletisimMaddeleri { get; set; }
         public DbSet<Talep> Talepler { get; set; }
         public DbSet<Yonetici> Yoneticiler { get; set; }
 

@@ -42,6 +42,7 @@ const PANEL_META = {
 
 const LIST_CONFIG = {
     '/api/GuvenMaddeleri': { fields: [{ key: 'metin', label: 'Metin' }, { key: 'siraNo', label: 'Sıra No', numeric: true }], empty: { metin: 'Yeni Madde', siraNo: 0 } },
+    '/api/IletisimMaddeleri': { fields: [{ key: 'metin', label: 'Metin' }, { key: 'siraNo', label: 'Sıra No', numeric: true }], empty: { metin: 'Yeni Madde', siraNo: 0 } },
     '/api/Hizmetler': { fields: [{ key: 'baslik', label: 'Başlık' }, { key: 'aciklama', label: 'Açıklama' }, { key: 'siraNo', label: 'Sıra No', numeric: true }], empty: { baslik: 'Yeni Hizmet', aciklama: '', siraNo: 0 } },
     '/api/SurecAdimlari': { fields: [{ key: 'baslik', label: 'Başlık' }, { key: 'aciklama', label: 'Açıklama' }, { key: 'siraNo', label: 'Sıra No', numeric: true }], empty: { baslik: 'Yeni Adım', aciklama: '', siraNo: 0 } },
     '/api/NedenBiz': { fields: [{ key: 'baslik', label: 'Başlık' }, { key: 'aciklama', label: 'Açıklama' }, { key: 'siraNo', label: 'Sıra No', numeric: true }], empty: { baslik: 'Yeni Madde', aciklama: '', siraNo: 0 } },
@@ -104,7 +105,8 @@ async function silListeSatiri(btn) {
     const row = btn.closest('.admin-row');
     const apiPath = row.dataset.path;
     const id = row.dataset.id;
-    if (!confirm('Bu kaydı silmek istediğinize emin misiniz?')) return;
+    const onay = await showConfirmModal('Emin misiniz?', 'Bu kaydı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.');
+    if (!onay) return;
     try {
         await api.del(`${apiPath}/${id}`);
         showToast('Silindi ✓');
@@ -199,16 +201,21 @@ async function kaydetManset() {
 // ---------- İletişim ----------
 
 async function loadContact() {
-    const c = (await api.get('/api/Iletisim')) || {};
+    const [c, maddeler] = await Promise.all([
+        api.get('/api/Iletisim'),
+        api.get('/api/IletisimMaddeleri')
+    ]);
     document.getElementById('admin-content').innerHTML = `
         <div class="admin-panel">
-          <div class="admin-field"><label>Telefon</label><input type="text" id="c-telefon" value="${escapeHtml(c.telefon || '')}"></div>
-          <div class="admin-field"><label>E-posta</label><input type="text" id="c-eposta" value="${escapeHtml(c.eposta || '')}"></div>
-          <div class="admin-field"><label>Instagram</label><input type="text" id="c-instagram" value="${escapeHtml(c.instagram || '')}"></div>
-          <div class="admin-field"><label>Adres / Şehir</label><input type="text" id="c-adres" value="${escapeHtml(c.adres || '')}"></div>
-          <div class="admin-field" style="margin-bottom:0;"><label>Harita konumu</label><input type="text" id="c-harita" value="${escapeHtml(c.haritaAramasi || '')}" placeholder="Örn. Kadıköy, İstanbul"></div>
-          <button type="button" class="btn btn-primary" style="margin-top:16px;" onclick="kaydetIletisim()">İletişim Bilgilerini Kaydet</button>
+          <div class="admin-field"><label>Telefon</label><input type="text" id="c-telefon" value="${escapeHtml((c || {}).telefon || '')}"></div>
+          <div class="admin-field"><label>E-posta</label><input type="text" id="c-eposta" value="${escapeHtml((c || {}).eposta || '')}"></div>
+          <div class="admin-field"><label>Instagram</label><input type="text" id="c-instagram" value="${escapeHtml((c || {}).instagram || '')}"></div>
+          <div class="admin-field"><label>Adres / Şehir</label><input type="text" id="c-adres" value="${escapeHtml((c || {}).adres || '')}"></div>
+          <div class="admin-field" style="margin-bottom:0;"><label>Harita konumu</label><input type="text" id="c-harita" value="${escapeHtml((c || {}).haritaAramasi || '')}" placeholder="Örn. Kadıköy, İstanbul"></div>
+          <button type="button" class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="kaydetIletisim()">İletişim Bilgilerini Kaydet</button>
         </div>
+        <div class="admin-sub" style="margin:-6px 0 10px;">İletişim altındaki güven/keşif maddeleri.</div>
+        ${renderListPanel('/api/IletisimMaddeleri', maddeler)}
     `;
 }
 
@@ -331,7 +338,8 @@ async function kaydetGaleriSatiri(id) {
 }
 
 async function silGaleriSatiri(id) {
-    if (!confirm('Bu galeri öğesini silmek istediğinize emin misiniz?')) return;
+    const onay = await showConfirmModal('Emin misiniz?', 'Bu galeri öğesini silmek istediğinize emin misiniz? Bu işlem geri alınamaz.');
+    if (!onay) return;
     try {
         await api.del(`/api/Galeri/${id}`);
         showToast('Silindi ✓');
@@ -386,7 +394,8 @@ async function talepIslendiGuncelle(id, islendiMi) {
 }
 
 async function talepSil(id) {
-    if (!confirm('Bu talebi silmek istediğinize emin misiniz?')) return;
+    const onay = await showConfirmModal('Emin misiniz?', 'Bu talebi silmek istediğinize emin misiniz? Bu işlem geri alınamaz.');
+    if (!onay) return;
     try {
         await api.del(`/api/Talepler/${id}`);
         showToast('Talep silindi ✓');
@@ -477,8 +486,7 @@ function renderSidebar() {
         <nav class="admin-nav">
           ${NAV_ITEMS.map(n => `
             <button type="button" class="admin-nav-item ${currentTab === n.id ? 'active' : ''}" onclick="gitSekmeye('${n.id}')">
-              ${ICON[n.id]}<span>${n.label}</span>
-              ${n.badge ? `<span class="admin-nav-badge">${leadsCount}</span>` : ''}
+              ${ICON[n.id]}<span>${n.label}</span>${n.badge ? `<span class="admin-nav-badge">${leadsCount}</span>` : ''}
             </button>`).join('')}
         </nav>
         <div class="admin-nav-divider"></div>

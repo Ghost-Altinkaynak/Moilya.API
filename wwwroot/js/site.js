@@ -12,11 +12,12 @@ const SERVICE_ICONS = [
 
 async function initPublicSite() {
     try {
-        const [anaSayfa, hizmetler, galeri, iletisim] = await Promise.all([
+        const [anaSayfa, hizmetler, galeri, iletisim, iletisimMaddeleri] = await Promise.all([
             api.get('/api/AnaSayfa'),
             api.get('/api/Hizmetler'),
             api.get('/api/Galeri'),
-            api.get('/api/Iletisim')
+            api.get('/api/Iletisim'),
+            api.get('/api/IletisimMaddeleri')
         ]);
 
         hizmetlerListesi = hizmetler || [];
@@ -30,6 +31,7 @@ async function initPublicSite() {
         renderStats(anaSayfa.istatistikler);
         renderGallerySection();
         renderContact(iletisim);
+        renderContactBadges(iletisimMaddeleri);
         attachReveal('.reveal');
 
         return true;
@@ -192,6 +194,16 @@ function renderContact(c) {
     document.getElementById('map-frame').src = `https://www.google.com/maps?q=${kodlanmis}&output=embed`;
     document.getElementById('map-directions-link').href = `https://www.google.com/maps/dir/?api=1&destination=${kodlanmis}`;
     document.getElementById('map-address').textContent = c.adres || '';
+}
+
+function renderContactBadges(list) {
+    const CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>';
+    document.getElementById('contact-badges').innerHTML = (list || []).map(m => `
+        <div class="contact-badge">
+          <div class="badge-icon">${CHECK}</div>
+          <span>${escapeHtml(m.metin)}</span>
+        </div>
+    `).join('');
 }
 
 document.addEventListener('DOMContentLoaded', () => {

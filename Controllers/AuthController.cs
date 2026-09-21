@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Moilya.API.Context;
 using Moilya.API.Dtos;
@@ -21,6 +22,7 @@ namespace Moilya.API.Controllers
         }
 
         [HttpPost("login")]
+        [EnableRateLimiting("GirisSinirlamasi")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             var yonetici = await _context.Yoneticiler

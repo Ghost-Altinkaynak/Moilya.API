@@ -96,6 +96,15 @@ namespace Moilya.API.Context
                 });
             }
 
+            if (!await context.IletisimMaddeleri.AnyAsync())
+            {
+                context.IletisimMaddeleri.AddRange(
+                    new IletisimMaddesi { Metin = "Hassas ölçü alma", SiraNo = 1 },
+                    new IletisimMaddesi { Metin = "Yerinde kartela ve renk seçimi", SiraNo = 2 },
+                    new IletisimMaddesi { Metin = "%100 ücretsiz keşif", SiraNo = 3 }
+                );
+            }
+
             if (!await context.Yoneticiler.AnyAsync())
             {
                 context.Yoneticiler.Add(new Yonetici

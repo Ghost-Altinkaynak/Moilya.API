@@ -252,7 +252,7 @@
         }
 
         .hero h1 {
-            font-size: clamp(38px, 5vw, 60px);
+            font-size: 54px;
             margin: 18px 0 22px;
         }
 
@@ -319,7 +319,7 @@
         }
 
             .section-head h2 {
-                font-size: clamp(28px,3.4vw,40px);
+                font-size: 34px;
                 margin-top: 14px;
             }
 
@@ -463,6 +463,11 @@
             grid-template-columns: 1fr 1fr;
             gap: 60px;
             align-items: center;
+        }
+
+        .why-title {
+            margin-top: 14px;
+            font-size: 32px;
         }
 
         .why-list {
@@ -621,11 +626,11 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 60px;
-            align-items: start;
+            align-items: center;
         }
 
         .contact h2 {
-            font-size: clamp(28px,3.4vw,40px);
+            font-size: 34px;
         }
 
         .contact p.lead {
@@ -654,6 +659,47 @@
             .contact-info svg {
                 color: var(--copper);
                 flex: none;
+            }
+
+        .contact-badges {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 36px;
+        }
+
+        .contact-badge {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px 18px;
+            background: var(--cream-panel);
+            border: 1px solid var(--line);
+            border-radius: 11px;
+            transition: border-color .2s ease, transform .2s ease;
+        }
+
+            .contact-badge:hover {
+                border-color: var(--copper);
+                transform: translateX(2px);
+            }
+
+            .contact-badge .badge-icon {
+                flex: none;
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+                background: var(--walnut-900);
+                color: var(--copper);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .contact-badge span {
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--walnut-900);
             }
 
         /* location / map */
@@ -772,6 +818,33 @@
             margin-top: 6px;
         }
 
+        .kvkk-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+        }
+
+            .kvkk-row input[type=checkbox] {
+                flex: 0 0 auto;
+                width: 16px;
+                height: 16px;
+                margin-top: 3px;
+            }
+
+            .kvkk-row label {
+                display: block;
+                flex: 1 1 auto;
+                min-width: 0;
+                font-size: 12.5px;
+                font-weight: 400;
+                color: var(--walnut-700);
+                line-height: 1.5;
+                margin-bottom: 0;
+            }
+
         .form-note {
             font-size: 12.5px;
             color: var(--walnut-700);
@@ -887,6 +960,18 @@
         }
 
         @media (max-width: 980px) {
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .section-head h2, .contact h2 {
+                font-size: 28px;
+            }
+
+            .why-title {
+                font-size: 26px;
+            }
+
             .nav-links {
                 display: none;
             }
@@ -928,6 +1013,18 @@
         }
 
         @media (max-width: 560px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .section-head h2, .contact h2 {
+                font-size: 24px;
+            }
+
+            .why-title {
+                font-size: 22px;
+            }
+
             .wrap {
                 padding: 0 20px;
             }
@@ -1121,7 +1218,7 @@
             align-items: center;
             gap: 11px;
             padding: 10px 12px;
-            border-radius: 9px;
+            border-radius: 99px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
@@ -1259,7 +1356,7 @@
             .admin-stat-card .stat-icon {
                 width: 36px;
                 height: 36px;
-                border-radius: 9px;
+                border-radius: 99px;
                 background: var(--walnut-900);
                 color: var(--copper);
                 display: flex;
@@ -1367,6 +1464,7 @@
                 background: #fff;
                 font-family: 'Karla',sans-serif;
                 font-size: 14px;
+                color: var(--ink);
             }
 
                 .admin-field input:focus, .admin-field textarea:focus {
@@ -1693,6 +1791,76 @@
             .admin-toast:empty, #toast:empty {
                 display: none !important;
             }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(36,26,18,0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s ease;
+            padding: 20px;
+        }
+
+            .modal-overlay.show {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+        .modal-box {
+            background: var(--cream-panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 30px 32px;
+            max-width: 380px;
+            width: 100%;
+            box-shadow: 0 30px 60px -20px rgba(36,26,18,0.5);
+            transform: translateY(14px);
+            transition: transform .2s ease;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            font-family: 'Fraunces', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--walnut-900);
+            margin: 0 0 10px;
+        }
+
+        .modal-message {
+            font-size: 14.5px;
+            color: var(--walnut-700);
+            line-height: 1.6;
+            margin: 0 0 24px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+            .modal-actions .btn {
+                padding: 11px 22px;
+                font-size: 13.5px;
+            }
+
+        .modal-btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+            .modal-btn-danger:hover {
+                background: #8A3826;
+            }
     </style>
 </head>
 <body>
@@ -1785,7 +1953,7 @@
                 <div class="wrap why-grid">
                     <div class="reveal">
                         <span class="eyebrow">Neden Moilya</span>
-                        <h2 style="margin-top:14px; font-size:clamp(26px,3vw,36px);">Fabrika ölçüsü değil, sizin ölçünüz</h2>
+                        <h2 class="why-title">Fabrika ölçüsü değil, sizin ölçünüz</h2>
                         <ul class="why-list" id="why-list"></ul>
                     </div>
                     <div class="why-panel reveal" id="stats-list"></div>
@@ -1811,12 +1979,21 @@
                         <h2>Evinizi ölçmeye ne zaman gelelim?</h2>
                         <p class="lead">Formu doldurun, 24 saat içinde sizi arayıp size en yakın zamanda ücretsiz keşif planlayalım.</p>
                         <div class="contact-info" id="contact-info"></div>
+                        <div class="contact-badges" id="contact-badges"></div>
                     </div>
                     <form id="lead-form">
                         <div class="field"><label for="f-ad">Ad Soyad</label><input id="f-ad" type="text" placeholder="Adınız Soyadınız" required></div>
                         <div class="field"><label for="f-tel">Telefon</label><input id="f-tel" type="tel" placeholder="05xx xxx xx xx" required></div>
                         <div class="field"><label for="f-semt">Semt / İlçe</label><input id="f-semt" type="text" placeholder="Örn. Kadıköy, İstanbul" required></div>
                         <div class="field"><label for="f-mesaj">Mesajınız (opsiyonel)</label><textarea id="f-mesaj" placeholder="Dolap veya mutfak ihtiyacınızdan kısaca bahsedin"></textarea></div>
+                        <div class="kvkk-row">
+                            <input type="checkbox" id="f-kvkk" required>
+                            <label for="f-kvkk">
+                                Bilgilerimin, tarafıma dönüş yapılması amacıyla Moilya tarafından işlenmesini
+                                <a href="#" onclick="showInfoModal('Aydınlatma Metni', 'Ad, telefon ve bölge bilgileriniz yalnızca size dönüş yapmak amacıyla saklanır; üçüncü taraflarla paylaşılmaz. Talep ettiğinizde bu bilgiler silinir.'); return false;" style="color:var(--copper-dark); text-decoration:underline;">(Aydınlatma Metni)</a>
+                                kabul ediyorum.
+                            </label>
+                        </div>
                         <button class="btn btn-primary" type="submit">Keşif Talep Et</button>
                         <p class="form-note" id="form-note">Formu gönderdiğinizde sizi 24 saat içinde arıyoruz.</p>
                     </form>
@@ -1879,10 +2056,18 @@
     </div>
 
     <div class="admin-toast" id="toast"></div>
+    <div class="modal-overlay" id="custom-modal-overlay">
+        <div class="modal-box">
+            <h3 class="modal-title" id="modal-title"></h3>
+            <p class="modal-message" id="modal-message"></p>
+            <div class="modal-actions" id="modal-actions"></div>
+        </div>
+    </div>
 
-    <!-- JS Bağlantıları -->
-    <script src="js/api.js"></script>
-    <script src="js/site.js"></script>
-    <script src="js/admin.js"></script>
+    <!-- JS Bağlantıları (Cache-Busting) -->
+    <script src="js/api.js?v=2"></script>
+    <script src="js/modal.js?v=1"></script>
+    <script src="js/site.js?v=2"></script>
+    <script src="js/admin.js?v=2"></script>
 </body>
 </html>
