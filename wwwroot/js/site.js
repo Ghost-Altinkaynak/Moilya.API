@@ -1,6 +1,11 @@
 ﻿let hizmetlerListesi = [];
 let galeriListesi = [];
 let galeriFiltre = 'all'; // 'all' ya da bir hizmetId (sayı, metin olarak)
+let iletisimBilgisi = null;
+
+function whatsappNumarasiTemizle(numara) {
+    return (numara || '').replace(/[^0-9]/g, '');
+}
 
 const CHECK_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>';
 const SERVICE_ICONS = [
@@ -22,6 +27,7 @@ async function initPublicSite() {
 
         hizmetlerListesi = hizmetler || [];
         galeriListesi = galeri || [];
+        iletisimBilgisi = iletisim;
 
         renderHero(anaSayfa.manset);
         renderTrust(anaSayfa.guvenMaddeleri);
@@ -210,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('lead-form');
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const not = document.getElementById('form-note');
         const veri = {
             adSoyad: document.getElementById('f-ad').value,
             telefon: document.getElementById('f-tel').value,
@@ -219,10 +224,16 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         try {
             await api.post('/api/Talepler', veri);
-            not.textContent = 'Teşekkürler! En kısa sürede sizi arayacağız.';
+            const waNumara = whatsappNumarasiTemizle(iletisimBilgisi ? iletisimBilgisi.whatsAppNumarasi : '');
+            let waLink = null;
+            if (waNumara) {
+                const waMetin = `Merhaba, Moilya web sitesinden yeni bir keşif talebi:\n\nAd Soyad: ${veri.adSoyad}\nTelefon: ${veri.telefon}\nBölge: ${veri.bolge}\nMesaj: ${veri.mesaj || '-'}`;
+                waLink = `https://wa.me/${waNumara}?text=${encodeURIComponent(waMetin)}`;
+            }
+            showLeadSuccessModal(waLink);
             form.reset();
         } catch (err) {
-            not.textContent = 'Bir sorun oluştu, lütfen bizi doğrudan arayın.';
+            showToast(err.message || 'Bir sorun oluştu, lütfen bizi doğrudan arayın.');
         }
     });
 });
